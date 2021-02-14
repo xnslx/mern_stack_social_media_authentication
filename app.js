@@ -8,19 +8,9 @@ const dbUrl = process.env.URL;
 const authRoute = require('./routes/auth');
 const passport = require('passport');
 const User = require('./model/users');
+require('./middleware/auth-passport')(passport)
 
 const port = process.env.PORT || 3001
-
-passport.serializeUser((user, cb) => {
-    cb(null, user.id)
-})
-
-passport.deserializeUser((id, cb) => {
-    User.findById(id, (err, user) => {
-        if (err) { return cb(err) }
-        cb(null, user)
-    })
-})
 
 
 
