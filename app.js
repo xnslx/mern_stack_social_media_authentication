@@ -8,11 +8,9 @@ const dbUrl = process.env.URL;
 const authRoute = require('./routes/auth');
 const passport = require('passport');
 const User = require('./model/users');
-require('./middleware/auth-passport')(passport)
-
 const port = process.env.PORT || 3001
 
-
+require('./middleware/auth-passport');
 
 app.use(bodyParser.json());
 
