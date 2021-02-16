@@ -6,21 +6,21 @@ const bcrypt = require('bcrypt');
 
 exports.postLogin = (req, res, next) => {
     passport.authenticate('login', (err, user, info) => {
+        console.log('user', user)
+        console.log('err', err)
+        console.log('info', info)
         if (err || !user) {
-            return res.status(404).json(err)
+            console.log(err)
+            return res.status(404).json(info.message)
         }
-        User
-            .findOne({ email: req.body.email })
-            .then(user => {
-                console.log('user', user)
-                const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET);
-                return res.status(201).json({ token: token, message: 'Log in successfully.' })
-            })
-            .catch(err => {
-                console.log(err)
-                res.status(401).json(err)
-            })
-    })
+        if (user) {
+            console.log('user', user)
+            const token = jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+            return res.status(201).json({ token: token, user: user, message: 'Log in successfully.' })
+        } else {
+            res.status(401).json(err)
+        }
+    })(req, res, next)
 }
 
 exports.postSignup = (req, res, next) => {
