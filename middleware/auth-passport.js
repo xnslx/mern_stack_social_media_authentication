@@ -1,3 +1,4 @@
+require('dotenv').config()
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
@@ -56,5 +57,26 @@ passport.use('signup', new localStrategy({
         })
         .catch(err => {
             console.log(err)
+        })
+}))
+
+
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+
+const opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = process.env.JWT_TOKEN;
+passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
+    console.log('jwt_payload', jwt_payload)
+    User
+        .findOne({ id: jwt_payload.sub })
+        .then(user => {
+            console.log('user', user)
+            if (user) {
+                return done(null, user)
+            } else {
+                return done(null, false, { message: 'user not found.' })
+            }
         })
 }))

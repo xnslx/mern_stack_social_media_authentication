@@ -12,7 +12,7 @@ exports.postLogin = (req, res, next) => {
         }
         if (user) {
             console.log('user', user)
-            const token = jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ email: user.email }, process.env.JWT_TOKEN, { expiresIn: '1h' });
             return res.status(201).json({ token: token, user: user, message: 'Log in successfully.' })
         } else {
             res.status(401).json(err)

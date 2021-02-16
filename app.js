@@ -6,6 +6,7 @@ const mongodb = require('mongodb');
 const mongoose = require('mongoose');
 const dbUrl = process.env.URL;
 const authRoute = require('./routes/auth');
+const userRoute = require('./routes/user');
 const passport = require('passport');
 const User = require('./model/users');
 const port = process.env.PORT || 3001
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize())
 
 app.use('/', authRoute)
+app.use('/user', userRoute)
 
 
 mongoose.connect(dbUrl, {
