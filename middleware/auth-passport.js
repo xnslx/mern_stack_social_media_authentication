@@ -30,24 +30,31 @@ passport.use('login', new localStrategy({
 ));
 
 
-// passport.use('/signup', new localStrategy((email, password, done) => {
-//     User
-//         .findOne({ email: email })
-//         .then(user => {
-//             if (user) {
-//                 return done(null, false, { message: 'This email has already been sign up' })
-//             }
-//             bcrypt.hash(password, 10)
-//                 .then(hashedPassword => {
-//                     const newUser = new User({
-//                         name: name,
-//                         email: email,
-//                         password: hashedPassword
-//                     })
-//                     return done(null, user)
-//                 })
-//         })
-//         .catch(err => {
-//             console.log(err)
-//         })
-// }))
+passport.use('signup', new localStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true,
+    session: false
+}, (req, email, password, done) => {
+    console.log(email)
+    console.log(password)
+    User
+        .findOne({ email: email })
+        .then(user => {
+            if (user) {
+                return done(null, false, { message: 'This email has already been taken' })
+            }
+            bcrypt.hash(password, 10)
+                .then(hashedPassword => {
+                    const newUser = new User({
+                        name: req.name,
+                        email: email,
+                        password: hashedPassword
+                    })
+                    return done(null, newUser)
+                })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}))
