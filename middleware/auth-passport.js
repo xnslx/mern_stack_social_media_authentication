@@ -68,7 +68,6 @@ const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.JWT_TOKEN;
 passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-    console.log('jwt_payload', jwt_payload)
     User
         .findOne({ id: jwt_payload.sub })
         .then(user => {
@@ -78,5 +77,8 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
             } else {
                 return done(null, false, { message: 'user not found.' })
             }
+        })
+        .catch(err => {
+            console.log(err)
         })
 }))

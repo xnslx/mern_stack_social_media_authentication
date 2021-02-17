@@ -7,11 +7,9 @@ const bcrypt = require('bcrypt');
 exports.postLogin = (req, res, next) => {
     passport.authenticate('login', (err, user, info) => {
         if (err || !user) {
-            console.log(err)
             return res.status(404).json(info.message)
         }
         if (user) {
-            console.log('user', user)
             const token = jwt.sign({ email: user.email }, process.env.JWT_TOKEN, { expiresIn: '1h' });
             return res.status(201).json({ token: token, user: user, message: 'Log in successfully.' })
         } else {
@@ -22,9 +20,6 @@ exports.postLogin = (req, res, next) => {
 
 exports.postSignup = (req, res, next) => {
     passport.authenticate('signup', (err, user, info) => {
-        console.log('err', err)
-        console.log('user', user)
-        console.log('info', info)
         if (err !== null || info !== undefined) {
             console.log(err)
             return res.status(404).json(info.message)
