@@ -89,5 +89,6 @@ passport.use(new FacebookStrategy({
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: "http://localhost:3001/facebook/callback"
 }, (accessToken, refreshToken, profile, done) => {
+    console.log(profile)
     return done(null, profile)
 }))

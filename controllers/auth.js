@@ -141,5 +141,9 @@ exports.getFacebookPage = (req, res, next) => {
 }
 
 exports.getFacebookCallback = (req, res, next) => {
-
+    passport.authenticate('facebook', {
+            failureRedirect: '/',
+            session: false
+        }),
+        console.log(req.user)
 }
