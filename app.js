@@ -32,4 +32,4 @@ mongoose.connect(dbUrl, {
     console.log(err)
 })
 
-app.listen(port)
+app.listen(port, () => console.log(`Server started on PORT ${port}`))
