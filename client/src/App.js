@@ -1,14 +1,17 @@
 import './App.css';
 import Login from './component/login/Login';
+import Home from './component/home/Home';
+import {Switch,BrowserRouter as Router, Route} from 'react-router-dom';
+
 
 function App() {
   return (
-    <div className="App">
-      <header>
-        <p>MERN STACK SOCIAL MEDIA AUTHENTICATION</p>
-        <Login />
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route path='/' exact component={Home}/>
+        <Route path='/login' component={Login}/>
+      </Switch>
+    </Router>
   );
 }
 

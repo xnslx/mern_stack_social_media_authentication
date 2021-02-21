@@ -87,24 +87,26 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3001/auth/facebook/callback"
+    callbackURL: "http://localhost:3001/facebook/callback",
+    profileFields: ["email", "name"]
 }, (accessToken, refreshToken, profile, done) => {
     console.log(accessToken)
     console.log(refreshToken)
     console.log(profile)
-    User.findOne({ oauthId: profile.id }, (err, user) => {
-        if (err) {
-            console.log(err)
-        }
-        if (!err && user !== null) {
-            done(null, user)
-        } else {
-            user = new User({
-                oauthId: profile.id,
+    User
+        .findOne({ email: profile._json.email })
+        .then((err, user) => {
+            if (err) {
+                return done(err)
+            }
+            if (user) {
+                return done(null, user)
+            }
+            const newUser = new User({
+                facebookId: profile.id,
                 name: profile.displayName
             })
-            user.save()
-            done(null, user)
-        }
-    })
+            newUser.save()
+            return done(null, user)
+        })
 }))
