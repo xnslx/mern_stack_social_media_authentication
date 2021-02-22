@@ -5,7 +5,7 @@ const Login = () => {
     return (
         <div>
             <div>
-              <a href="/facebook">
+              <a href="http://localhost:3001/facebook">
                 <svg
                   width="30"
                   height="30"
