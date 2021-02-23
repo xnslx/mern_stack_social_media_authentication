@@ -84,38 +84,37 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
         })
 }))
 
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
 
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-});
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: "http://localhost:3001/facebook/callback",
-    profileFields: ["email", "name"]
+    profileFields: ["emails", "name", "displayName"]
 }, (accessToken, refreshToken, profile, done) => {
     console.log('accessToken', accessToken)
     console.log('refreshToken', refreshToken)
     console.log('profile', profile)
     User
-        .findOne({ email: profile._json.email })
-        .then((user, err) => {
-            console.log('user', user)
-            if (err) { return done(err) }
-            if (user) { return done(null, user) }
-            if (!user) {
+        .findOne({ facebookId: profile.id }, (err, user) => {
+            if (err) {
+                return done(err)
+            }
+            if (user) {
+                done(null, user)
+            } else {
                 const newUser = new User({
+                    facebookId: profile.id,
                     name: profile.displayName,
-                    email: profile._json.email
+                    email: profile._json.email,
+                    password: Date.now()
                 })
-                newUser.save()
-                return done(null, newUser)
+                newUser.save(err => {
+                    if (err) {
+                        done(err)
+                    }
+                    done(null, newUser)
+                })
             }
         })
-        .catch(err => {
-            console.log(err)
-        })
+
 }))

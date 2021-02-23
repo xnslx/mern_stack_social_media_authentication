@@ -137,13 +137,18 @@ exports.postUpdatePassword = (req, res, next) => {
 }
 
 exports.getFacebookPage = (req, res, next) => {
-    passport.authenticate('facebook', { scope: ['public_profile', 'email'] })(req, res, next)
+    passport.authenticate('facebook')(req, res, next)
 }
 
 exports.getFacebookCallback = (req, res, next) => {
     passport.authenticate('facebook', {
-        successRedirect: '/success',
         failureRedirect: '/fail'
+    }, (err, user) => {
+        console.log('err', err)
+        console.log('user', user)
+        if (user) {
+            res.redirect('/success')
+        }
     })(req, res, next)
 }
 
