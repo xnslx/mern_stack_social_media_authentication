@@ -15,9 +15,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    facebookId: {
-        type: String,
-        required: true
+    facebookAccount: {
+        type: {
+            id: String,
+            token: String
+        }
     },
     resetToken: String,
     resetTokenExpiration: Date

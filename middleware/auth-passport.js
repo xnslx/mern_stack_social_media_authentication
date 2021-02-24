@@ -103,16 +103,19 @@ passport.use(new FacebookStrategy({
                 done(null, user)
             } else {
                 const newUser = new User({
-                    facebookId: profile.id,
                     name: profile.displayName,
                     email: profile._json.email,
-                    password: Date.now()
+                    password: Date.now(),
+                    facebookAccount: {
+                        id: profile.id,
+                        token: accessToken
+                    }
                 })
-                newUser.save(err => {
+                newUser.save((err, savedUser) => {
                     if (err) {
                         done(err)
                     }
-                    done(null, newUser)
+                    done(null, savedUser)
                 })
             }
         })

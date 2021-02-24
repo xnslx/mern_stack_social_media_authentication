@@ -5,6 +5,9 @@ const User = require('../model/users');
 
 exports.getProfilePage = (req, res, next) => {
     passport.authenticate('jwt', { session: false }, (err, user, info) => {
+        console.log(err)
+        console.log(user)
+        console.log(info)
         if (err) {
             console.log(err)
         }
