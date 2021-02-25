@@ -1,10 +1,12 @@
 import React from 'react';
+import FacebookButton from '../facebookbutton/FacebookButton';
 
 const Login = () => {
 
     return (
         <div>
-            <div>
+            <FacebookButton />
+            {/* <div>
               <a href="http://localhost:3001/facebook">
                 <svg
                   width="30"
@@ -18,8 +20,7 @@ const Login = () => {
                 </svg>
                 <span>Log in with Facebook</span>
               </a>
-            </div>
-            {/* <a href="/auth/facebook">Login with Facebook</a> */}
+            </div> */}
         </div>
     )
 };

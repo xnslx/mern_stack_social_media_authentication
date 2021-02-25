@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const app = express();
 const mongodb = require('mongodb');
 const mongoose = require('mongoose');
@@ -12,6 +13,8 @@ const User = require('./model/users');
 const port = process.env.PORT || 3001
 
 require('./middleware/auth-passport');
+
+app.use(cors())
 
 app.use(bodyParser.json());
 

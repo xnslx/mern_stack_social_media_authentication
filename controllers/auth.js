@@ -159,3 +159,19 @@ exports.getSuccess = (req, res, next) => {
 exports.getFail = (req, res, next) => {
     res.status(200).json('fail')
 }
+
+exports.postAuthenticateUser = (req, res, next) => {
+    passport.authenticate('facebook-token', { session: false }, (req, res, next) => {
+        console.log(req)
+        console.log(res)
+            // if (!req.user) {
+            //     return res.status(401).json('user not authenticated')
+            // } else {
+            //     req.auth = {
+            //         id: req.user.id
+            //     }
+            //     const token = jwt.sign({ id: auth.id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+            //     console.log('token', token)
+            // }
+    })(req, res, next)
+}

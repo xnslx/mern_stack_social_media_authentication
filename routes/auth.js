@@ -31,13 +31,13 @@ router.post('/updatepassword', [
 ], authController.postUpdatePassword)
 
 
-router.get('/facebook', authController.getFacebookPage)
-router.get('/facebook/callback', authController.getFacebookCallback)
+// router.get('/facebook', authController.getFacebookPage)
+// router.get('/facebook/callback', authController.getFacebookCallback)
 
-router.get('/success', authController.getSuccess)
-router.get('/fail', authController.getFail)
+// router.get('/success', authController.getSuccess)
+// router.get('/fail', authController.getFail)
 
-
+router.post('/auth/facebook', authController.postAuthenticateUser)
 
 
 

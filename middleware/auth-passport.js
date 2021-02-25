@@ -1,7 +1,7 @@
 require('dotenv').config()
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
+const FacebookTokenStrategy = require('passport-facebook-token');
 const bcrypt = require('bcrypt');
 const User = require('../model/users');
 
@@ -85,11 +85,10 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
 }))
 
 
-passport.use(new FacebookStrategy({
+passport.use(new FacebookTokenStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3001/facebook/callback",
-    profileFields: ["emails", "name", "displayName"]
+    fbGraphVersion: 'v3.0'
 }, (accessToken, refreshToken, profile, done) => {
     console.log('accessToken', accessToken)
     console.log('refreshToken', refreshToken)
