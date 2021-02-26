@@ -12,14 +12,10 @@ const userSchema = new Schema({
         required: true
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
-    facebookAccount: {
-        type: {
-            id: String,
-            token: String
-        }
+    facebookId: {
+        type: String
     },
     resetToken: String,
     resetTokenExpiration: Date

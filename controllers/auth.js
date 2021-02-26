@@ -137,41 +137,34 @@ exports.postUpdatePassword = (req, res, next) => {
 }
 
 exports.getFacebookPage = (req, res, next) => {
-    passport.authenticate('facebook')(req, res, next)
+    passport.authenticate('facebook', (req, res) => {
+        console.log(req)
+        console.log(res)
+    })(req, res)
 }
 
 exports.getFacebookCallback = (req, res, next) => {
     passport.authenticate('facebook', {
-        failureRedirect: '/fail'
+        failureRedirect: '/fail',
+        successRedirect: '/success'
     }, (err, user) => {
-        console.log('err', err)
-        console.log('user', user)
+        console.log('getFacebookCallback', user)
         if (user) {
+            const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+            // res.status(201).json({ user: user, token: token, message: 'facebook authenticated user.' })
+            // res.redirect('/success')
+
+            res.cookie('x-auth-cookie', token)
             res.redirect('/success')
         }
     })(req, res, next)
 }
 
 exports.getSuccess = (req, res, next) => {
+    console.log('success', res)
     res.status(200).json('success')
 }
 
 exports.getFail = (req, res, next) => {
     res.status(200).json('fail')
-}
-
-exports.postAuthenticateUser = (req, res, next) => {
-    passport.authenticate('facebook-token', { session: false }, (req, res, next) => {
-        console.log(req)
-        console.log(res)
-            // if (!req.user) {
-            //     return res.status(401).json('user not authenticated')
-            // } else {
-            //     req.auth = {
-            //         id: req.user.id
-            //     }
-            //     const token = jwt.sign({ id: auth.id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
-            //     console.log('token', token)
-            // }
-    })(req, res, next)
 }
