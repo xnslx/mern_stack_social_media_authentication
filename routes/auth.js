@@ -2,7 +2,8 @@ const express = require('express');
 const { check, body } = require('express-validator')
 const router = express.Router();
 const authController = require('../controllers/auth');
-const passport = require('passport')
+const passport = require('passport');
+const passportConfig = require('../middleware/auth-passport');
 
 router.post('/login', authController.postLogin)
 
@@ -31,8 +32,8 @@ router.post('/updatepassword', [
 ], authController.postUpdatePassword)
 
 
-router.get('/facebook', authController.getFacebookPage)
-router.get('/facebook/callback', authController.getFacebookCallback)
+router.post('/auth/facebook', passport.authenticate('facebook-token', { session: false }), authController.postFacebookToken)
+router.get('/facebook/callback', passport.authenticate('facebook-token', { session: false }), authController.getFacebookCallback)
 
 router.get('/success', authController.getSuccess)
 router.get('/fail', authController.getFail)

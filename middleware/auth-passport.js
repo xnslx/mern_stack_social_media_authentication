@@ -1,8 +1,8 @@
 require('dotenv').config()
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
-// const FacebookTokenStrategy = require('passport-facebook-token');
-const FacebookStrategy = require('passport-facebook').Strategy
+const FacebookTokenStrategy = require('passport-facebook-token');
+// const FacebookStrategy = require('passport-facebook').Strategy
 const bcrypt = require('bcrypt');
 const User = require('../model/users');
 
@@ -88,23 +88,23 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
 }))
 
 
-passport.use(new FacebookStrategy({
+passport.use('facebook-token', new FacebookTokenStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: '/facebook/callback',
-    profileFields: ['email', 'displayName']
-}, (accessToken, refreshToken, profile, done) => {
+    fbGraphVersion: 'v3.0',
+    profileFields: ['email', 'displayName'],
+    passReqToCallback: true
+}, (req, accessToken, refreshToken, profile, done) => {
+    console.log(req)
     console.log('accessToken', accessToken)
     console.log('refreshToken', refreshToken)
     console.log('profile', profile)
     User
-        .findOne({ facebookId: profile.id })
-        .then((user, err) => {
+        .findOne({ facebookId: profile.id }, function(err, user) {
+            console.log('middleware', user)
             if (err) {
                 return done(err)
-            }
-            if (user) {
-                console.log('middleware', user)
+            } else if (user) {
                 return done(null, user)
             } else {
                 const newUser = new User({
@@ -121,3 +121,35 @@ passport.use(new FacebookStrategy({
         })
 
 }))
+
+
+// passport.use(new FacebookStrategy({
+//     clientID: process.env.FACEBOOK_APP_ID,
+//     clientSecret: process.env.FACEBOOK_APP_SECRET,
+//     callbackURL: '/facebook/callback',
+//     profileFields: ['email', 'displayName']
+// }, async(accessToken, refreshToken, profile, done) => {
+//     console.log('accessToken', accessToken)
+//     console.log('refreshToken', refreshToken)
+//     console.log('profile', profile)
+//     try {
+//         const currentUser = User.findOne({ facebookId: profile.id })
+//         if (currentUser) {
+//             return done(null, currentUser)
+//             console.log(currentUser)
+//         }
+//     } catch (err) {
+//         console.log(err)
+//     }
+//     try {
+//         const newUser = new User({
+//             name: profile.displayName,
+//             email: profile._json.email,
+//             facebookId: profile.id
+//         })
+//         newUser.save()
+//         return done(null, newUser)
+//     } catch (err) {
+//         console.log(err)
+//     }
+// }))

@@ -3,26 +3,26 @@ import FacebookLogin from 'react-facebook-login';
 // import axios from 'axios';
 
 const FacebookButton = () => {
-    // const [accessToken, setAccessToken] = useState('')
+    const [accessToken, setAccessToken] = useState('')
 
-    // const componentClicked = () => {
-    //     console.log('clicked');
-    // }
+    const componentClicked = () => {
+        console.log('clicked');
+    }
 
-    // const responseFacebook = (response) => {
-    //     console.log(response)
-    //     setAccessToken(response.accessToken)
-    // }
+    const responseFacebook = (response) => {
+        console.log(response)
+        setAccessToken(response.accessToken)
+    }
     return (
         <div>
-            {/* <FacebookLogin
+            <FacebookLogin
                 appId=""
                 autoLoad={false}
                 fields="name,email"
                 onClick={componentClicked}
                 callback={responseFacebook} 
-            /> */}
-            <a href="http://localhost:3001/facebook">Login with Facebook</a>
+            />
+            {/* <a href="http://localhost:3001/facebook">Login with Facebook</a> */}
         </div>
     )
 };
