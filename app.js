@@ -9,16 +9,22 @@ const dbUrl = process.env.URL;
 const authRoute = require('./routes/auth');
 const userRoute = require('./routes/user');
 const passport = require('passport');
+const passportConfig = require('./middleware/auth-passport');
 const User = require('./model/users');
 const port = process.env.PORT || 3001
-
-require('./middleware/auth-passport');
 
 app.use(cors())
 
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+})
 
 app.use(passport.initialize())
 

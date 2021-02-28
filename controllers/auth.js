@@ -136,32 +136,22 @@ exports.postUpdatePassword = (req, res, next) => {
         })
 }
 
-exports.postFacebookToken = (req, res, next) => {
-    const token = req.body.accessToken
+exports.getFacebookToken = (req, res, next) => {
+    console.log('getFacebookToken', req.user)
+    console.log('i am fired')
 }
 
 exports.getFacebookCallback = (req, res, next) => {
-    passport.authenticate('facebook', {
-        session: false,
-        failureRedirect: '/fail',
-        successRedirect: '/success'
-    }, (req, res) => {
-        // console.log('req', req)
-        // console.log('res', res)
-        // res.redirect('/success')
-        // const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
-        // console.log('getFacebookCallback', user)
-        // if (user) {
-        //     const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
-        //     // res.status(201).json({ user: user, token: token, message: 'facebook authenticated user.' })
-
-        //     res.cookie('x-auth-cookie', token)
-        // }
-    })(req, res)
+    console.log('getFacebookCallback', req.user)
+    if (req.user) {
+        const token = jwt.sign({ facebookId: req.user.facebookId }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+        res.cookie('access_token', token)
+        res.redirect('/user/profile')
+            // res.status(200).json({ message: 'you will be redirected to your unique profile page.' })
+    }
 }
 
 exports.getSuccess = (req, res, next) => {
-    console.log('success', res)
     res.status(200).json('success')
 }
 

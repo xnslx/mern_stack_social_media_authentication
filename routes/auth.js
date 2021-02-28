@@ -32,8 +32,9 @@ router.post('/updatepassword', [
 ], authController.postUpdatePassword)
 
 
-router.post('/auth/facebook', passport.authenticate('facebook-token', { session: false }), authController.postFacebookToken)
-router.get('/facebook/callback', passport.authenticate('facebook-token', { session: false }), authController.getFacebookCallback)
+router.get('/auth/facebook', passport.authenticate('facebook', { session: false }), authController.getFacebookToken)
+
+router.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false, successRedirect: '/user/profile', failureRedirect: '/login' }), authController.getFacebookCallback)
 
 router.get('/success', authController.getSuccess)
 router.get('/fail', authController.getFail)

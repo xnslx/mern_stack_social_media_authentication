@@ -1,10 +1,11 @@
 require('dotenv').config()
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
-const FacebookTokenStrategy = require('passport-facebook-token');
-// const FacebookStrategy = require('passport-facebook').Strategy
+// const FacebookTokenStrategy = require('passport-facebook-token');
+const FacebookStrategy = require('passport-facebook').Strategy
 const bcrypt = require('bcrypt');
 const User = require('../model/users');
+const jwt = require('jsonwebtoken');
 
 passport.use('login', new localStrategy({
         usernameField: 'email',
@@ -64,48 +65,52 @@ passport.use('signup', new localStrategy({
         })
 }))
 
+const cookieExtractor = req => {
+    let token = null;
+    if (req && req.cookie) {
+        token = req.cookie['jwt']
+    }
+    return token;
+}
 
 const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.jwtFromRequest = cookieExtractor;
 opts.secretOrKey = process.env.JWT_TOKEN;
 passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
+    console.log('jwt_payload', jwt_payload)
     User
-        .findOne({ id: jwt_payload.sub })
-        .then(user => {
-            console.log('user', user)
-            if (user) {
-                return done(null, user)
-            } else {
-                return done(null, false, { message: 'user not found.' })
+        .findOne({ id: jwt_payload.sub }, (err, user) => {
+            if (err) {
+                return done(err, false)
             }
-        })
-        .catch(err => {
-            console.log(err)
+            if (user) {
+                console.log('jwt', user)
+                done(null, user)
+            } else {
+                done(null, false)
+            }
         })
 }))
 
 
-passport.use('facebook-token', new FacebookTokenStrategy({
+passport.use('facebook', new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    fbGraphVersion: 'v3.0',
-    profileFields: ['email', 'displayName'],
-    passReqToCallback: true
+    callbackURL: '/auth/facebook/callback',
+    profileFields: ['email', 'displayName']
 }, (req, accessToken, refreshToken, profile, done) => {
-    console.log(req)
+    console.log('middlewareFirst', req.user)
     console.log('accessToken', accessToken)
     console.log('refreshToken', refreshToken)
     console.log('profile', profile)
     User
         .findOne({ facebookId: profile.id }, function(err, user) {
-            console.log('middleware', user)
             if (err) {
                 return done(err)
             } else if (user) {
-                return done(null, user)
+                done(null, user)
             } else {
                 const newUser = new User({
                     name: profile.displayName,
@@ -113,7 +118,7 @@ passport.use('facebook-token', new FacebookTokenStrategy({
                     facebookId: profile.id
                 })
                 newUser.save()
-                return done(null, newUser)
+                done(null, newUser)
             }
         })
         .catch(err => {
@@ -121,35 +126,3 @@ passport.use('facebook-token', new FacebookTokenStrategy({
         })
 
 }))
-
-
-// passport.use(new FacebookStrategy({
-//     clientID: process.env.FACEBOOK_APP_ID,
-//     clientSecret: process.env.FACEBOOK_APP_SECRET,
-//     callbackURL: '/facebook/callback',
-//     profileFields: ['email', 'displayName']
-// }, async(accessToken, refreshToken, profile, done) => {
-//     console.log('accessToken', accessToken)
-//     console.log('refreshToken', refreshToken)
-//     console.log('profile', profile)
-//     try {
-//         const currentUser = User.findOne({ facebookId: profile.id })
-//         if (currentUser) {
-//             return done(null, currentUser)
-//             console.log(currentUser)
-//         }
-//     } catch (err) {
-//         console.log(err)
-//     }
-//     try {
-//         const newUser = new User({
-//             name: profile.displayName,
-//             email: profile._json.email,
-//             facebookId: profile.id
-//         })
-//         newUser.save()
-//         return done(null, newUser)
-//     } catch (err) {
-//         console.log(err)
-//     }
-// }))
