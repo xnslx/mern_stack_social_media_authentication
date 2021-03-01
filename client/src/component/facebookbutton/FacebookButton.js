@@ -14,18 +14,11 @@ const FacebookButton = () => {
     //     console.log(response)
     //     setAccessToken(response.accessToken)
     //     setIsLoggedIn(true)
-    //     axios.post('/auth/facebook/', {
-    //         data:response.accessToken
-    //     }).then(result => {
-    //         console.log(result)
-    //     }).catch(err => {
-    //         console.log(err)
-    //     })
     // }
 
     // useEffect(() => {
     //     axios.post('/auth/facebook/', {
-    //         data:accessToken
+    //         token:accessToken
     //     }).then(result => {
     //         console.log(result)
     //     }).catch(err => {

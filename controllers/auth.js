@@ -9,12 +9,13 @@ const crypto = require('crypto');
 
 exports.postLogin = (req, res, next) => {
     passport.authenticate('login', (err, user, info) => {
+        console.log('postlogin', user)
         if (err || !user) {
             return res.status(403).json(info.message)
         }
         if (user) {
             const token = jwt.sign({ email: user.email }, process.env.JWT_TOKEN, { expiresIn: '1h' });
-            return res.status(201).json({ token: token, user: user, message: 'Log in successfully.' })
+            return res.status(201).json({ access_token: token, user: user, message: 'Log in successfully.' })
         } else {
             res.status(401).json(err)
         }
@@ -137,16 +138,16 @@ exports.postUpdatePassword = (req, res, next) => {
 }
 
 exports.getFacebookToken = (req, res, next) => {
-    console.log('getFacebookToken', req.user)
-    console.log('i am fired')
+    console.log('req', req)
+    console.log('res', res)
 }
 
-exports.getFacebookCallback = (req, res, next) => {
+exports.getFacebookCallback = (req, res) => {
     console.log('getFacebookCallback', req.user)
     if (req.user) {
-        const token = jwt.sign({ facebookId: req.user.facebookId }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+        const token = jwt.sign({ facebookId: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
         res.cookie('access_token', token)
-        res.redirect('/user/profile')
+        res.redirect('/success')
             // res.status(200).json({ message: 'you will be redirected to your unique profile page.' })
     }
 }

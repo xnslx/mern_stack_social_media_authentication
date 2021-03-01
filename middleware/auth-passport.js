@@ -1,7 +1,7 @@
 require('dotenv').config()
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
-// const FacebookTokenStrategy = require('passport-facebook-token');
+const FacebookTokenStrategy = require('passport-facebook-token');
 const FacebookStrategy = require('passport-facebook').Strategy
 const bcrypt = require('bcrypt');
 const User = require('../model/users');
@@ -43,6 +43,7 @@ passport.use('signup', new localStrategy({
     console.log(req.body.name)
     console.log(email)
     console.log(password)
+    let foundUser
     User
         .findOne({ email: email })
         .then(user => {
@@ -98,10 +99,10 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
 passport.use('facebook', new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: '/auth/facebook/callback',
-    profileFields: ['email', 'displayName']
-}, (req, accessToken, refreshToken, profile, done) => {
-    console.log('middlewareFirst', req.user)
+    profileFields: ['email', 'displayName'],
+    callbackURL: '/auth/facebook/callback'
+}, function(accessToken, refreshToken, profile, done) {
+    // console.log('middlewareFirst', req)
     console.log('accessToken', accessToken)
     console.log('refreshToken', refreshToken)
     console.log('profile', profile)
@@ -115,7 +116,9 @@ passport.use('facebook', new FacebookStrategy({
                 const newUser = new User({
                     name: profile.displayName,
                     email: profile._json.email,
-                    facebookId: profile.id
+                    facebook: {
+                        id: profile.id
+                    }
                 })
                 newUser.save()
                 done(null, newUser)
