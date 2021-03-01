@@ -39,31 +39,37 @@ passport.use('signup', new localStrategy({
     passwordField: 'password',
     passReqToCallback: true,
     session: false
-}, (req, email, password, done) => {
-    console.log(req.body.name)
+}, async(req, email, password, done) => {
+    console.log(req.body)
     console.log(email)
     console.log(password)
-    let foundUser
-    User
-        .findOne({ email: email })
-        .then(user => {
-            if (user) {
-                return done(null, false, { message: 'This email has already been taken' })
-            }
-            bcrypt.hash(password, 10)
-                .then(hashedPassword => {
-                    const newUser = new User({
-                        name: req.body.name,
-                        email: email,
-                        password: hashedPassword
-                    })
-                    newUser.save()
-                    return done(null, newUser)
+    let foundUser = await User.findOne({ email: email });
+    if (foundUser) {
+        return done(null, false, { message: 'This email has already been taken' })
+    }
+    foundUser = await User.findOne({ 'facebook.email': email })
+    if (foundUser) {
+        foundUser.facebook.email = email
+        bcrypt.hash(password, 10)
+            .then(hashedPassword => {
+                foundUser.email = req.body.email
+                foundUser.password = hashedPassword
+                foundUser.save()
+                return done(null, foundUser)
+            })
+    }
+    if (!foundUser) {
+        bcrypt.hash(password, 10)
+            .then(hashedPassword => {
+                const newUser = new User({
+                    name: req.body.name,
+                    email: email,
+                    password: hashedPassword
                 })
-        })
-        .catch(err => {
-            console.log(err)
-        })
+                newUser.save()
+                return done(null, newUser)
+            })
+    }
 }))
 
 const cookieExtractor = req => {
@@ -115,9 +121,9 @@ passport.use('facebook', new FacebookStrategy({
             } else {
                 const newUser = new User({
                     name: profile.displayName,
-                    email: profile._json.email,
                     facebook: {
-                        id: profile.id
+                        id: profile.id,
+                        email: profile._json.email
                     }
                 })
                 newUser.save()
