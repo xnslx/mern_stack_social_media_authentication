@@ -14,8 +14,9 @@ exports.postLogin = (req, res, next) => {
             return res.status(403).json(info.message)
         }
         if (user) {
-            const token = jwt.sign({ email: user.email }, process.env.JWT_TOKEN, { expiresIn: '1h' });
-            return res.status(201).json({ access_token: token, user: user, message: 'Log in successfully.' })
+            const token = jwt.sign({ sub: user.id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+            res.cookie('access_token', token)
+            return res.status(200).json({ message: 'Log in successfully.', user: user, token: token })
         } else {
             res.status(401).json(err)
         }
@@ -145,10 +146,9 @@ exports.getFacebookToken = (req, res, next) => {
 exports.getFacebookCallback = (req, res) => {
     console.log('getFacebookCallback', req.user)
     if (req.user) {
-        const token = jwt.sign({ facebookId: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+        const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
         res.cookie('access_token', token)
-        res.redirect('/success')
-            // res.status(200).json({ message: 'you will be redirected to your unique profile page.' })
+        res.redirect('/user/profile')
     }
 }
 

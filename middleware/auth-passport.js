@@ -73,33 +73,55 @@ passport.use('signup', new localStrategy({
 }))
 
 const cookieExtractor = req => {
+    console.log(req.body)
     let token = null;
-    if (req && req.cookie) {
-        token = req.cookie['jwt']
+    if (req && req.cookies) {
+        token = req.cookies['access_token']
+        console.log('cookieextractor', token)
     }
     return token;
 }
 
 const JwtStrategy = require('passport-jwt').Strategy;
+const ExtracgJwt = require('passport-jwt').ExtractJwt;
 
-const opts = {};
-opts.jwtFromRequest = cookieExtractor;
-opts.secretOrKey = process.env.JWT_TOKEN;
-passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-    console.log('jwt_payload', jwt_payload)
-    User
-        .findOne({ id: jwt_payload.sub }, (err, user) => {
-            if (err) {
-                return done(err, false)
-            }
-            if (user) {
-                console.log('jwt', user)
+// const opts = {};
+// opts.jwtFromRequest = cookieExtractor;
+// opts.secretOrKey = process.env.JWT_TOKEN;
+passport.use('jwt', new JwtStrategy({
+        jwtFromRequest: cookieExtractor,
+        secretOrKey: process.env.JWT_TOKEN,
+        passReqToCallback: true
+    }, (req, payload, done) => {
+        console.log('payload', payload)
+        User
+            .findById(payload.sub)
+            .then(user => {
+                if (!user) {
+                    return done(null, false)
+                }
+                req.user = user;
                 done(null, user)
-            } else {
-                done(null, false)
-            }
-        })
-}))
+            })
+            .catch(err => {
+                done(err, false)
+            })
+    }))
+    // passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
+    //     console.log('jwt_payload', jwt_payload)
+    //     User
+    //         .findOne({ id: jwt_payload.sub }, (err, user) => {
+    //             if (err) {
+    //                 return done(err, false)
+    //             }
+    //             if (user) {
+    //                 console.log('jwt', user)
+    //                 done(null, user)
+    //             } else {
+    //                 done(null, false)
+    //             }
+    //         })
+    // }))
 
 
 passport.use('facebook', new FacebookStrategy({

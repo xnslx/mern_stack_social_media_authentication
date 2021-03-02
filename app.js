@@ -12,8 +12,11 @@ const passport = require('passport');
 const passportConfig = require('./middleware/auth-passport');
 const User = require('./model/users');
 const port = process.env.PORT || 3001
+const cookieParser = require('cookie-parser');
 
 app.use(cors())
+
+app.use(cookieParser())
 
 app.use(bodyParser.json());
 

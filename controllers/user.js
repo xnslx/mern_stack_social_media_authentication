@@ -4,6 +4,22 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/users');
 
 exports.getProfilePage = (req, res, next) => {
-    console.log(req)
-    console.log(res)
+    console.log('req.user', req.user)
+    res.status(200).json('Finally you are getting here.')
+        // console.log(res)
+        // passport.authenticate('jwt', { session: false }, (err, user, info) => {
+        //     console.log(err)
+        //     console.log(user)
+        //     console.log(info)
+        //     if (err) {
+        //         console.log(err)
+        //     }
+        //     if (info !== undefined) {
+        //         return res.status(404).json(info.message)
+        //     }
+        //     if (user) {
+        //         res.status(200).json({ name: user.name, message: 'you log in your unique profile.' })
+        //     }
+
+    // })(req, res, next)
 }
