@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
-import FacebookLogin from 'react-facebook-login';
-import axios from 'axios';
+import React from 'react';
+// import FacebookLogin from 'react-facebook-login';
+// import axios from 'axios';
 
 const FacebookButton = () => {
     // const [accessToken, setAccessToken] = useState('');

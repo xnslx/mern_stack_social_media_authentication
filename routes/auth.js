@@ -36,10 +36,13 @@ router.get('/auth/facebook', passport.authenticate('facebook', { session: false 
 
 router.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false, failureRedirect: '/login' }), authController.getFacebookCallback)
 
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
+
+router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login', session: false }), authController.getGoogleCallback)
+
 router.get('/success', authController.getSuccess)
 router.get('/fail', authController.getFail)
 
-// router.post('/auth/facebook', authController.postAuthenticateUser)
 
 
 

@@ -2,7 +2,9 @@ require('dotenv').config()
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const FacebookTokenStrategy = require('passport-facebook-token');
-const FacebookStrategy = require('passport-facebook').Strategy
+const FacebookStrategy = require('passport-facebook').Strategy;
+// const GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const bcrypt = require('bcrypt');
 const User = require('../model/users');
 const jwt = require('jsonwebtoken');
@@ -85,43 +87,25 @@ const cookieExtractor = req => {
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtracgJwt = require('passport-jwt').ExtractJwt;
 
-// const opts = {};
-// opts.jwtFromRequest = cookieExtractor;
-// opts.secretOrKey = process.env.JWT_TOKEN;
 passport.use('jwt', new JwtStrategy({
-        jwtFromRequest: cookieExtractor,
-        secretOrKey: process.env.JWT_TOKEN,
-        passReqToCallback: true
-    }, (req, payload, done) => {
-        console.log('payload', payload)
-        User
-            .findById(payload.sub)
-            .then(user => {
-                if (!user) {
-                    return done(null, false)
-                }
-                req.user = user;
-                done(null, user)
-            })
-            .catch(err => {
-                done(err, false)
-            })
-    }))
-    // passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-    //     console.log('jwt_payload', jwt_payload)
-    //     User
-    //         .findOne({ id: jwt_payload.sub }, (err, user) => {
-    //             if (err) {
-    //                 return done(err, false)
-    //             }
-    //             if (user) {
-    //                 console.log('jwt', user)
-    //                 done(null, user)
-    //             } else {
-    //                 done(null, false)
-    //             }
-    //         })
-    // }))
+    jwtFromRequest: cookieExtractor,
+    secretOrKey: process.env.JWT_TOKEN,
+    passReqToCallback: true
+}, (req, payload, done) => {
+    console.log('payload', payload)
+    User
+        .findById(payload.sub)
+        .then(user => {
+            if (!user) {
+                return done(null, false)
+            }
+            req.user = user;
+            done(null, user)
+        })
+        .catch(err => {
+            done(err, false)
+        })
+}))
 
 
 passport.use('facebook', new FacebookStrategy({
@@ -156,4 +140,35 @@ passport.use('facebook', new FacebookStrategy({
             console.log(err)
         })
 
+}))
+
+passport.use('google', new GoogleStrategy({
+    clientID: process.env.GOOGLE_APP_ID,
+    clientSecret: process.env.GOOGLE_APP_SECRECT,
+    callbackURL: 'http://localhost:3001/auth/google/callback'
+}, function(token, tokenSecret, profile, done) {
+    console.log('token', token)
+    console.log('tokenSecret', tokenSecret)
+    console.log('profile', profile)
+    User
+        .findOne({ googleId: profile.id }, function(err, user) {
+            if (err) {
+                return done(err)
+            } else if (user) {
+                done(null, user)
+            } else {
+                const newUser = new User({
+                    name: profile.displayName,
+                    google: {
+                        id: profile.id,
+                        email: profile._json.email
+                    }
+                })
+                newUser.save()
+                done(null, newUser)
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
 }))

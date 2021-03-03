@@ -159,3 +159,12 @@ exports.getSuccess = (req, res, next) => {
 exports.getFail = (req, res, next) => {
     res.status(200).json('fail')
 }
+
+exports.getGoogleCallback = (req, res, next) => {
+    console.log('getGoogleCallback', req.user)
+    if (req.user) {
+        const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+        res.cookie('access_token', token)
+        res.redirect('/user/profile')
+    }
+}

@@ -21,6 +21,14 @@ const userSchema = new Schema({
             type: String
         }
     },
+    google: {
+        id: {
+            type: String
+        },
+        email: {
+            type: String
+        }
+    },
     resetToken: String,
     resetTokenExpiration: Date
 })
