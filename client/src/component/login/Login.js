@@ -1,13 +1,16 @@
 import React from 'react';
 import FacebookButton from '../facebookbutton/FacebookButton';
 import GoogleButton from '../googlebutton/GoogleButton';
-
+// import TwitterButton from '../twitterbutton/TwitterButton';
+import GithubButton from '../githubbutton/GithubButton';
 const Login = () => {
 
     return (
         <div>
             <FacebookButton />
             <GoogleButton />
+            <GithubButton />
+            {/* <TwitterButton /> */}
             {/* <div>
               <a href="http://localhost:3001/facebook">
                 <svg

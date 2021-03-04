@@ -168,3 +168,21 @@ exports.getGoogleCallback = (req, res, next) => {
         res.redirect('/user/profile')
     }
 }
+
+exports.getTwitterCallback = (req, res, next) => {
+    console.log('getTwitterCallback', req.user)
+    if (req.user) {
+        const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+        res.cookie('access_token', token)
+        res.redirect('/user/profile')
+    }
+}
+
+exports.getGithubCallback = (req, res, next) => {
+    console.log('getGithubCallback', req.user)
+    if (req.user) {
+        const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+        res.cookie('access_token', token)
+            // res.redirect('/user/profile')
+    }
+}

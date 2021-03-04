@@ -5,6 +5,9 @@ const FacebookTokenStrategy = require('passport-facebook-token');
 const FacebookStrategy = require('passport-facebook').Strategy;
 // const GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
+// const GithubStrategy = require('passport-github').Strategy;
+const GithubStrategy = require('passport-github2').Strategy;
 const bcrypt = require('bcrypt');
 const User = require('../model/users');
 const jwt = require('jsonwebtoken');
@@ -160,6 +163,71 @@ passport.use('google', new GoogleStrategy({
                 const newUser = new User({
                     name: profile.displayName,
                     google: {
+                        id: profile.id,
+                        email: profile._json.email
+                    }
+                })
+                newUser.save()
+                done(null, newUser)
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}))
+
+passport.use('twitter', new TwitterStrategy({
+    consumerKey: process.env.TWITTER_API_KEY,
+    consumerSecret: process.env.TWITTER_SECRECT_KEY,
+    callbackURL: 'http://localhost:3001/auth/twitter/callback'
+}, function(token, tokenSecret, profile, done) {
+    console.log('token', token)
+    console.log('tokenSecret', tokenSecret)
+    console.log('profile', profile)
+    User
+        .findOne({ twitterId: profile.id }, function(err, user) {
+            if (err) {
+                return done(err)
+            } else if (user) {
+                done(null, user)
+            } else {
+                const newUser = new User({
+                    name: profile.displayName,
+                    twitter: {
+                        id: profile.id,
+                        email: profile._json.email
+                    }
+                })
+                newUser.save()
+                done(null, newUser)
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}))
+
+
+passport.use('github', new GithubStrategy({
+    clientID: process.env.GITHUB_CLIENTID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: "/auth/github/callback"
+}, function(accessToken, refreshToken, profile, done) {
+    console.log('accessToken', accessToken)
+    console.log('refreshToken', refreshToken)
+    console.log('profile', profile)
+    User
+        .findOne({ githubId: profile.id }, function(err, user) {
+            console.log('user', user)
+            if (err) {
+                return done(err)
+            } else if (user) {
+                console.log('middleware', user)
+                done(null, user)
+            } else {
+                const newUser = new User({
+                    name: profile.username,
+                    github: {
                         id: profile.id,
                         email: profile._json.email
                     }

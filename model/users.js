@@ -29,6 +29,22 @@ const userSchema = new Schema({
             type: String
         }
     },
+    twitter: {
+        id: {
+            type: String
+        },
+        email: {
+            type: String
+        }
+    },
+    github: {
+        id: {
+            type: String
+        },
+        email: {
+            type: String
+        }
+    },
     resetToken: String,
     resetTokenExpiration: Date
 })

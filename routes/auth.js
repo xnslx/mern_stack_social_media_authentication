@@ -40,6 +40,21 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] 
 
 router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login', session: false }), authController.getGoogleCallback)
 
+router.get('/auth/twitter', passport.authenticate('twitter'))
+
+router.get('/auth/twitter/callback', passport.authenticate('twitter', {
+    successRedirect: '/user/profile',
+    failureRedirect: '/login'
+}), authController.getTwitterCallback)
+
+router.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }))
+
+router.get('/auth/github/callback', passport.authenticate('github', {
+    successRedirect: '/user/profile',
+    failureRedirect: '/login',
+    session: false
+}), authController.getGithubCallback)
+
 router.get('/success', authController.getSuccess)
 router.get('/fail', authController.getFail)
 
