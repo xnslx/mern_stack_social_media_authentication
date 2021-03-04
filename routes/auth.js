@@ -50,7 +50,6 @@ router.get('/auth/twitter/callback', passport.authenticate('twitter', {
 router.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }))
 
 router.get('/auth/github/callback', passport.authenticate('github', {
-    successRedirect: '/user/profile',
     failureRedirect: '/login',
     session: false
 }), authController.getGithubCallback)

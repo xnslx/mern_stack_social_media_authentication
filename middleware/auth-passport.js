@@ -7,7 +7,7 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 // const GithubStrategy = require('passport-github').Strategy;
-const GithubStrategy = require('passport-github2').Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
 const bcrypt = require('bcrypt');
 const User = require('../model/users');
 const jwt = require('jsonwebtoken');
@@ -208,10 +208,10 @@ passport.use('twitter', new TwitterStrategy({
 }))
 
 
-passport.use('github', new GithubStrategy({
+passport.use('github', new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENTID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "/auth/github/callback"
+    callbackURL: "http://localhost:3001/auth/github/callback"
 }, function(accessToken, refreshToken, profile, done) {
     console.log('accessToken', accessToken)
     console.log('refreshToken', refreshToken)
@@ -223,7 +223,7 @@ passport.use('github', new GithubStrategy({
                 return done(err)
             } else if (user) {
                 console.log('middleware', user)
-                done(null, user)
+                return done(null, user)
             } else {
                 const newUser = new User({
                     name: profile.username,
