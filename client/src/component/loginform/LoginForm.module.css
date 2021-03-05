@@ -1,0 +1,79 @@
+.Container {
+    /* background-color: red; */
+    width: 90vw;
+    height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.LabelContainer {
+    /* background-color: red; */
+    margin-bottom: 4px;
+}
+
+.Input {
+    width: 88vw;
+    height: 40px;
+    margin-bottom: 12px;
+    border-style: solid 1px black;
+}
+
+.Button {
+    margin-top: 12px;
+    width: 90vw;
+    height: 48px;
+    border: none;
+    background-color: #fc5359;
+    color: #1a1918;
+    font-weight: 600;
+}
+
+.Link {
+    position: absolute;
+    right: 20px;
+    margin-right: 20px;
+    text-decoration: none;
+    color: black
+}
+
+.Alink {
+    text-decoration: none;
+    color: black;
+    padding-top: 8px;
+}
+
+.Alink:hover {
+    text-decoration: underline;
+}
+
+.ErrorMessage {
+    text-align: center;
+    height: 24px;
+    width: 84vw;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 12px;
+    margin-bottom: 24px;
+    border: #fc5359;
+    background-color: #ffddde;
+    color: #fc5359;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+@media only screen and (min-width: 768px) {
+    .Container {
+        width: 40vw;
+    }
+    .Input {
+        width: 40vw;
+    }
+    .Button {
+        width: 41vw;
+    }
+    .ErrorMessage {
+        width: 38vw;
+    }
+}
