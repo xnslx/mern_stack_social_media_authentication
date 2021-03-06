@@ -1,12 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import classes from './LoginForm.module.css';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {loginUser} from '../../action/index';
+import {withRouter} from 'react-router';
 
 const LoginForm = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState([]);
+    // const [error, setError] = useState([]);
 
     const currentUser = {
         email: email,
@@ -14,19 +16,19 @@ const LoginForm = (props) => {
     }
 
 
-    useEffect(() => {
-        getErrorMessage()
-    }, [props.error])
+    // useEffect(() => {
+    //     getErrorMessage()
+    // }, [props.error])
 
-    const getErrorMessage = () => {
-        if(props.error !== null) {
-        setError(props.error.message);
-        }
-    }
+    // const getErrorMessage = () => {
+    //     if(props.error !== null) {
+    //     setError(props.error.message);
+    //     }
+    // }
 
     const loginSubmitHandler = (e) => {
         e.preventDefault();
-        // props.dispatch(loginUser(currentUser, props.history));
+        props.dispatch(loginUser(currentUser, props.history));
     }
     return (
         <div>
@@ -35,7 +37,8 @@ const LoginForm = (props) => {
             <h1 style={{textAlign:'center'}}>Log In</h1>
             <br/>
             <br/>
-            {error.length > 0? <p className={classes.ErrorMessage}>{error}</p> : null}
+            {props.error? <p className={classes.ErrorMessage}>{props.error.message}</p> : null}
+            {/* {error.length > 0? <p className={classes.ErrorMessage}>{error}</p> : null} */}
             <div className={classes.Form}>
                 <form action="" onSubmit={loginSubmitHandler}>
                     <div>
@@ -69,11 +72,12 @@ const LoginForm = (props) => {
 };
 
 const mapStateToProps = (state) => {
+    console.log('state',state)
     return {
         auth: state.auth,
         error: state.error.message
     }
 }
 
-export default connect(mapStateToProps)(LoginForm);
+export default withRouter(connect(mapStateToProps)(LoginForm));
 

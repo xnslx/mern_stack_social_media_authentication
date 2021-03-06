@@ -9,9 +9,10 @@ const crypto = require('crypto');
 
 exports.postLogin = (req, res, next) => {
     passport.authenticate('login', (err, user, info) => {
+        console.log('info', info)
         console.log('postlogin', user)
         if (err || !user) {
-            return res.status(403).json(info.message)
+            return res.status(403).json({ message: info.message })
         }
         if (user) {
             const token = jwt.sign({ sub: user.id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
@@ -148,6 +149,7 @@ exports.getFacebookCallback = (req, res) => {
     if (req.user) {
         const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
         res.cookie('access_token', token)
+            // res.status(200).json({ name: req.user.name, message: 'you log in successfully' })
         res.redirect('/user/profile')
     }
 }

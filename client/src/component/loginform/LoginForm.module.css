@@ -4,6 +4,7 @@
     height: 100vh;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
 }

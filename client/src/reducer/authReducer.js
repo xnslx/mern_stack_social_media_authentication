@@ -10,17 +10,20 @@ const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.LOGIN_REQUEST:
             return {
-                loading: true
+                loading: true,
+                isAuthenticated: false
             }
         case actionTypes.LOGIN_SUCCESS:
             return {
                 loading: false,
-                user: action.payload
+                user: action.payload,
+                isAuthenticated: true
             }
         case actionTypes.LOGIN_FAIL:
             return {
                 loading: false,
-                error: action.payload
+                error: action.payload,
+                isAuthenticated: false
             }
         case actionTypes.USER_LOGOUT:
             return {}
