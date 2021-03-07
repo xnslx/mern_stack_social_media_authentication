@@ -32,7 +32,6 @@ passport.use('login', new localStrategy({
                     } else {
                         return done(null, user)
                     }
-
                 })
             })
     }
@@ -78,7 +77,6 @@ passport.use('signup', new localStrategy({
 }))
 
 const cookieExtractor = req => {
-    console.log(req.body)
     let token = null;
     if (req && req.cookies) {
         token = req.cookies['access_token']
@@ -111,21 +109,23 @@ passport.use('jwt', new JwtStrategy({
 }))
 
 
-passport.use('facebook', new FacebookStrategy({
+passport.use('facebook-token', new FacebookTokenStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    profileFields: ['email', 'displayName'],
-    callbackURL: '/auth/facebook/callback'
+    // profileFields: ['email', 'displayName'],
+    // passReqToCallback: true
+    // callbackURL: '/auth/facebook/callback'
 }, function(accessToken, refreshToken, profile, done) {
-    // console.log('middlewareFirst', req)
+    // console.log('req.user', req.user)
     console.log('accessToken', accessToken)
     console.log('refreshToken', refreshToken)
     console.log('profile', profile)
     User
-        .findOne({ facebookId: profile.id }, function(err, user) {
+        .findOne({ 'facebook.id': profile.id }, function(err, user) {
             if (err) {
                 return done(err)
             } else if (user) {
+                console.log('user', user)
                 done(null, user)
             } else {
                 const newUser = new User({

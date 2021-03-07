@@ -32,9 +32,9 @@ router.post('/updatepassword', [
 ], authController.postUpdatePassword)
 
 
-router.get('/auth/facebook', passport.authenticate('facebook', { session: false }, { scope: ['public_profile', 'email'] }))
+router.post('/auth/facebook', passport.authenticate('facebook-token', { session: false }), authController.postFacebookToken)
 
-router.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false, failureRedirect: '/login' }), authController.getFacebookCallback)
+// router.post('/auth/facebook/callback', passport.authenticate('facebook-token', { session: false, failureRedirect: '/login' }), authController.getFacebookCallback)
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 
