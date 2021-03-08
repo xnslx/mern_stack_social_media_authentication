@@ -5,5 +5,5 @@ const User = require('../model/users');
 
 exports.getProfilePage = (req, res, next) => {
     console.log('getProfilePage', req.user)
-        // res.status(200).json({ user: req.user })
+    res.status(200).json({ user: req.user, message: 'You are getting here.' })
 }

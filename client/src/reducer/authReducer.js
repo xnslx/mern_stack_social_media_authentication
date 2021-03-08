@@ -16,6 +16,7 @@ const authReducer = (state = initialState, action) => {
             }
         case actionTypes.LOGIN_SUCCESS:
         case actionTypes.FACEBOOK_LOGIN_SUCCESS:
+        case actionTypes.GET_PROFILE_DATA:
             return {
                 loading: false,
                 user: action.payload,

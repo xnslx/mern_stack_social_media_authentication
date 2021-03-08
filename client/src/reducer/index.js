@@ -6,11 +6,11 @@ import errorReducer from './errorReducer';
 // import Cookies from 'js-cookie';
 
 
-const initialState = {
-    auth: {
-        user: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
-    }
-}
+// const initialState = {
+//     auth: {
+//         user: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
+//     }
+// }
 
 
 const rootReducer = combineReducers({
@@ -20,6 +20,6 @@ const rootReducer = combineReducers({
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(rootReducer, initialState, composeEnhancer(applyMiddleware(thunk)));
+const store = createStore(rootReducer, composeEnhancer(applyMiddleware(thunk)));
 
 export default store;

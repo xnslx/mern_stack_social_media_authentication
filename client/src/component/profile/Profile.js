@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
-// import axios from 'axios';
-
+import {getProfileData} from '../../action/index';
 const Profile = (props) => {
+    
+    useEffect(() => {
+        props.dispatch(getProfileData())
+    },[])
 
     return (
         <div>
-            {props.auth.isAuthenticated? <span>{props.auth.user.name}</span> : null}Finally you are getting here!
+             {props.auth.user.name}Finally you are getting here!
         </div>
     )
 };

@@ -114,10 +114,10 @@ passport.use('facebook-token', new FacebookTokenStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     // profileFields: ['email', 'displayName'],
-    // passReqToCallback: true
-    // callbackURL: '/auth/facebook/callback'
-}, function(accessToken, refreshToken, profile, done) {
-    // console.log('req.user', req.user)
+    passReqToCallback: true
+        // callbackURL: '/auth/facebook/callback'
+}, function(req, accessToken, refreshToken, profile, done) {
+    console.log('req.user', req.user)
     console.log('accessToken', accessToken)
     console.log('refreshToken', refreshToken)
     console.log('profile', profile)

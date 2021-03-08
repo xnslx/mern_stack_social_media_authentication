@@ -149,22 +149,20 @@ exports.postFacebookToken = (req, res, next) => {
     if (req.user) {
         const token = jwt.sign({ sub: req.user.id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
         console.log('token', token)
-        res.cookie('access_token', token, {
-            httpOnly: true
-        })
+        res.cookie('access_token', token)
         res.status(200).json({ user: req.user, token: token, message: 'you log in successfully' })
     }
 }
 
-exports.getFacebookCallback = (req, res) => {
-    console.log('getFacebookCallback', req.user)
-    if (req.user) {
-        const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
-        res.cookie('access_token', token)
-        res.status(200).json({ message: 'you log in successfully' })
-            // res.redirect('/user/profile')
-    }
-}
+// exports.getFacebookCallback = (req, res) => {
+//     console.log('getFacebookCallback', req.user)
+//     if (req.user) {
+//         const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+//         res.cookie('access_token', token)
+//         res.status(200).json({ message: 'you log in successfully' })
+//             // res.redirect('/user/profile')
+//     }
+// }
 
 exports.getSuccess = (req, res, next) => {
     res.status(200).json('success')
