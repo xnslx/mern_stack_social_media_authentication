@@ -1,12 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
+// import axios from 'axios';
 
 const Profile = (props) => {
 
     return (
         <div>
-            {props.auth.user.name}Finally you are getting here!
+            {props.auth.isAuthenticated? <span>{props.auth.user.name}</span> : null}Finally you are getting here!
         </div>
     )
 };

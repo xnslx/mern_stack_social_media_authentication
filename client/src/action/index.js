@@ -25,9 +25,10 @@ export const facebookLogin = (data, history) => (dispatch) => {
     }).then(result => {
         console.log(result)
         dispatch({
-            type: 'FACEBOOK_LOGIN_SUCCESS',
-            payload: result.data.user
-        })
+                type: 'FACEBOOK_LOGIN_SUCCESS',
+                payload: result.data.user
+            })
+            // localStorage.setItem('userInfo', JSON.stringify(result.data.user))
         history.push('/profile')
     }).catch(err => {
         console.log(err)

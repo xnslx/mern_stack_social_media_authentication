@@ -13,6 +13,8 @@
     "author": "Xian",
     "license": "MIT",
     "dependencies": {
+        "@fortawesome/free-solid-svg-icons": "^5.15.2",
+        "@fortawesome/react-fontawesome": "^0.1.14",
         "bcrypt": "^5.0.0",
         "body-parser": "^1.19.0",
         "concurrently": "^5.3.0",

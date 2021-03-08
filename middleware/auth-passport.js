@@ -77,6 +77,7 @@ passport.use('signup', new localStrategy({
 }))
 
 const cookieExtractor = req => {
+    console.log(req.cookies['access_token'])
     let token = null;
     if (req && req.cookies) {
         token = req.cookies['access_token']

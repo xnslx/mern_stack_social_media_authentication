@@ -5,7 +5,9 @@ import Profile from './component/profile/Profile';
 import {Switch,BrowserRouter as Router, Route} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './reducer/index';
+// import axios from 'axios';
 
+// axios.defaults.withCredentials = true;
 
 function App() {
   return (
