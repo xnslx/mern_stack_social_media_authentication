@@ -6,6 +6,8 @@ const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_APP_ID);
 
 exports.postLogin = (req, res, next) => {
     passport.authenticate('login', (err, user, info) => {
@@ -172,13 +174,69 @@ exports.getFail = (req, res, next) => {
     res.status(200).json('fail')
 }
 
-exports.getGoogleCallback = (req, res, next) => {
-    console.log('getGoogleCallback', req.user)
-    if (req.user) {
-        const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
-        res.cookie('access_token', token)
-        res.redirect('/user/profile')
-    }
+// exports.getGoogleCallback = (req, res, next) => {
+//     console.log('getGoogleCallback', req.user)
+//     if (req.user) {
+//         const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+//         res.cookie('access_token', token)
+//         res.redirect('/user/profile')
+//     }
+// }
+
+// exports.postGoogleToken = (req, res, next) => {
+//     console.log('postgoogletoken', req.user)
+//     if (req.user) {
+//         const token = jwt.sign({ sub: req.user.id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+//         console.log('token', token)
+//         res.cookie('access_token', token)
+//         res.status(200).json({ user: req.user, token: token, message: 'you log in successfully' })
+//     }
+// }
+
+
+
+
+
+
+exports.postGoogleInfo = (req, res, next) => {
+    console.log(req.body)
+    const { tokenId } = req.body
+    client.verifyIdToken({ idToken: tokenId, audience: process.env.GOOGLE_APP_ID }).then(response => {
+        console.log(response)
+        const { email, email_verified, name } = response.payload;
+        if (email_verified) {
+            User.findOne({ email: email }).exec((err, user) => {
+                if (err) {
+                    return res.status(400).json({ message: 'Something went wrong when trying to find your email.' })
+                } else {
+                    if (user) {
+                        const token = jwt.sign({ sub: user.id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+                        const { _id, name, email } = user;
+                        res.cookie('access_token', token)
+                        res.status(200).json({
+                            token: token,
+                            user: user,
+                            message: 'A recurring google user.'
+                        })
+                    } else {
+                        const newUser = new User({
+                            name: name,
+                            email: email
+                        })
+                        newUser.save((err, data) => {
+                            if (err) {
+                                return res.status(400).json({ message: 'Something went wrong when trying to save your data.' })
+                            }
+                            const token = jwt.sign({ _id: data._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+                            const { _id, name, email } = newUser;
+                            res.cookie('access_token', token)
+                            res.status(200).json({ token: token, user: newUser, message: 'A new google user.' })
+                        })
+                    }
+                }
+            })
+        }
+    })
 }
 
 exports.getTwitterCallback = (req, res, next) => {

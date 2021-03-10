@@ -36,9 +36,22 @@ router.post('/auth/facebook', passport.authenticate('facebook-token', { session:
 
 // router.post('/auth/facebook/callback', passport.authenticate('facebook-token', { session: false, failureRedirect: '/login' }), authController.getFacebookCallback)
 
-router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
+// router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 
-router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login', session: false }), authController.getGoogleCallback)
+// router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login', session: false }), authController.getGoogleCallback)
+
+
+
+
+
+router.post('/auth/google', authController.postGoogleInfo)
+
+
+
+
+
+
+
 
 router.get('/auth/twitter', passport.authenticate('twitter'))
 

@@ -35,8 +35,30 @@ export const facebookLogin = (data, history) => (dispatch) => {
     })
 }
 
+export const googleLogin = (data, history) => (dispatch) => {
+    console.log('data', data)
+        // axios({
+        //     method: "POST",
+        //     url: "http://localhost:3001/auth/google",
+        //     data: { tokenId: data.tokenId }
+        // }).then(response => {
+        //     console.log('response', response)
+        // })
+    axios.post('http://localhost:3001/auth/google', {
+        tokenId: data.tokenId
+    }).then(response => {
+        console.log('response', response)
+        dispatch({
+            type: 'GOOGLE_LOGIN_SUCCESS',
+            payload: response.data
+        })
+        localStorage.setItem('userInfo', JSON.stringify(response.data.user))
+        history.push('/profile')
+    })
+}
+
 export const getProfileData = () => (dispatch) => {
-    axios.get('/user/profile').then(result => {
+    axios.get('http://localhost:3001/user/profile').then(result => {
         console.log(result)
         dispatch({
             type: 'GET_PROFILE_DATA',
