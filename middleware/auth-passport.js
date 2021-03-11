@@ -5,7 +5,6 @@ const FacebookTokenStrategy = require('passport-facebook-token');
 const FacebookStrategy = require('passport-facebook').Strategy;
 // const GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
 // const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const { OAuth2Client } = require('google-auth-library');
 const TwitterStrategy = require('passport-twitter').Strategy;
 // const GithubStrategy = require('passport-github').Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
@@ -148,6 +147,8 @@ passport.use('facebook-token', new FacebookTokenStrategy({
         })
 
 }))
+
+
 
 // passport.use('google', new GoogleStrategy({
 //     clientID: process.env.GOOGLE_APP_ID,

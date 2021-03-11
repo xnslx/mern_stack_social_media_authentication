@@ -6,6 +6,7 @@ import {withRouter} from 'react-router';
 import {facebookLogin} from '../../action/index';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faFacebookSquare} from '@fortawesome/free-brands-svg-icons';
+import {FACEBOOK_CLIENT_ID} from '../../keys';
 
 
 const FacebookButton = (props) => {
@@ -21,16 +22,8 @@ const FacebookButton = (props) => {
 
     return (
         <div style={{marginTop:'-200px', width: '60vw', marginLeft:'auto', marginRight:'auto'}}>
-            {/* <FontAwesomeIcon icon={faFacebookSquare} style={{fontSize:'36px', color:'#4c69ba'}}/> */}
-            {/* <FacebookLogin
-                appId="431464294788204"
-                autoLoad={false}
-                fields="name,email"
-                onClick={componentClicked}
-                callback={responseFacebook}
-            /> */}
             <FacebookLogin
-                appId="431464294788204"
+                appId={FACEBOOK_CLIENT_ID}
                 autoLoad={false}
                 fields="name,email"
                 onClick={componentClicked}

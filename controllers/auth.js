@@ -253,6 +253,10 @@ exports.getGithubCallback = (req, res, next) => {
     if (req.user) {
         const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
         res.cookie('access_token', token)
-        res.redirect('/user/profile')
+            // res.redirect('/user/profile')
+        res.writeHead(302, {
+            Location: 'http://localhost:3000/profile'
+        });
+        res.end()
     }
 }

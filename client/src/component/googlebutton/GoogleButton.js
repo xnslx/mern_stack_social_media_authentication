@@ -5,6 +5,7 @@ import {GoogleLogin} from 'react-google-login';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import {googleLogin} from '../../action/index';
+import {GOOGLE_CLIENT_ID} from '../../keys';
 
 require('dotenv').config()
 
@@ -19,7 +20,7 @@ const GoogleButton = (props) => {
         <div>
             {/* <FontAwesomeIcon icon={faGoogle} style={{fontSize:'30px', color:'#4c69ba'}}/> */}
             <GoogleLogin
-                clientId=""
+                clientId={GOOGLE_CLIENT_ID}
                 render={renderProps => (
                     <FontAwesomeIcon icon={faGoogle} onClick={renderProps.onClick} disabled={renderProps.disabled} style={{fontSize:'30px', color:'#4c69ba'}}/> 
                     )}
