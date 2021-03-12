@@ -6,7 +6,7 @@ const initialState = {
     loading: true
 }
 
-export const authReducer = (state = initialState, action) => {
+export const loginReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.LOGIN_REQUEST:
         case actionTypes.FACEBOOK_LOGIN_REQUEST:
@@ -60,4 +60,20 @@ export const signupReducer = (state = initialState, action) => {
     }
 }
 
-// export default authReducer;
+
+const initialBackendDataState = {
+    backendData: ''
+}
+
+export const backendDataReducer = (state = initialBackendDataState, action) => {
+        switch (action.type) {
+            case 'GET_BACKEND_DATA':
+                return {
+                    ...state,
+                    backendData: action.payload
+                }
+            default:
+                return state;
+        }
+    }
+    // export default authReducer;

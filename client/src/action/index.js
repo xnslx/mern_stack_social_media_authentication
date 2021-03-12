@@ -16,6 +16,9 @@ export const loginUser = (currentUser, history) => (dispatch) => {
                 type: 'LOGIN_FAIL',
                 payload: err.response.data
             })
+            dispatch({
+                type: 'CLEAR_ERROR'
+            })
         })
 }
 
@@ -35,6 +38,9 @@ export const signupUser = (userInfo, history) => (dispatch) => {
             dispatch({
                 type: 'SIGNUP_FAIL',
                 payload: err.response.data
+            })
+            dispatch({
+                type: 'CLEAR_ERROR'
             })
         })
 }
@@ -87,4 +93,24 @@ export const getProfileData = () => (dispatch) => {
     }).catch(err => {
         console.log(err)
     })
+}
+
+export const getBackendData = result => {
+    return {
+        type: 'GET_BACKEND_DATA',
+        payload: result
+    }
+}
+
+export const retrievePassword = (email) => (dispatch) => {
+    axios.post('http://localhost:3001/findpassword', email)
+        .then(result => {
+            dispatch(getBackendData(result.data))
+        })
+        .catch(err => {
+            dispatch({
+                type: 'GET_ERROR',
+                payload: err.response.data
+            })
+        })
 }

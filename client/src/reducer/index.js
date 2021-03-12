@@ -1,21 +1,13 @@
 import { combineReducers } from 'redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { authReducer, signupReducer } from './authReducer';
+import { loginReducer, signupReducer, backendDataReducer } from './authReducer';
 import errorReducer from './errorReducer';
-// import Cookies from 'js-cookie';
-
-
-// const initialState = {
-//     auth: {
-//         user: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
-//     }
-// }
-
 
 const rootReducer = combineReducers({
-    auth: authReducer,
+    auth: loginReducer,
     signup: signupReducer,
+    backendData: backendDataReducer,
     error: errorReducer
 });
 
