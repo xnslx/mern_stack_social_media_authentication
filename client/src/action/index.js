@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const loginUser = (currentUser, history) => (dispatch) => {
-    axios.post('/login', currentUser)
+    axios.post('http://localhost:3001/login', currentUser)
         .then(result => {
             console.log('result', result)
             dispatch({
@@ -14,6 +14,26 @@ export const loginUser = (currentUser, history) => (dispatch) => {
             console.log('err', err)
             dispatch({
                 type: 'LOGIN_FAIL',
+                payload: err.response.data
+            })
+        })
+}
+
+export const signupUser = (userInfo, history) => (dispatch) => {
+    axios.post('http://localhost:3001/signup', userInfo)
+        .then(result => {
+            console.log('result', result)
+            dispatch({
+                type: 'SIGNUP_SUCCESS',
+                payload: result
+            })
+            history.push('/login')
+            console.log(result)
+        })
+        .catch(err => {
+            console.log(err)
+            dispatch({
+                type: 'SIGNUP_FAIL',
                 payload: err.response.data
             })
         })

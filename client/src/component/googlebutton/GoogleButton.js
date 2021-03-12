@@ -7,8 +7,6 @@ import {withRouter} from 'react-router';
 import {googleLogin} from '../../action/index';
 import {GOOGLE_CLIENT_ID} from '../../keys';
 
-require('dotenv').config()
-
 const GoogleButton = (props) => {
 
     const responseGoogle = (response) => {
@@ -18,11 +16,10 @@ const GoogleButton = (props) => {
 
     return (
         <div>
-            {/* <FontAwesomeIcon icon={faGoogle} style={{fontSize:'30px', color:'#4c69ba'}}/> */}
             <GoogleLogin
                 clientId={GOOGLE_CLIENT_ID}
                 render={renderProps => (
-                    <FontAwesomeIcon icon={faGoogle} onClick={renderProps.onClick} disabled={renderProps.disabled} style={{fontSize:'30px', color:'#4c69ba'}}/> 
+                    <FontAwesomeIcon icon={faGoogle} onClick={renderProps.onClick} disabled={renderProps.disabled} style={{fontSize:'28px', color:'#4c69ba'}}/> 
                     )}
                 buttonText="Login"
                 onSuccess={responseGoogle}

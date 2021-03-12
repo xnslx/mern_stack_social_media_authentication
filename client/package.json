@@ -17,6 +17,7 @@
         "js-cookie": "^2.2.1",
         "jwt-decode": "^3.1.2",
         "react": "^17.0.1",
+        "react-bootstrap": "^1.5.1",
         "react-dom": "^17.0.1",
         "react-facebook-login": "^4.1.1",
         "react-github-login": "^1.0.3",
@@ -40,6 +41,7 @@
             "react-app/jest"
         ]
     },
+    "proxy": "http://localhost:3001/",
     "browserslist": {
         "production": [
             ">0.2%",

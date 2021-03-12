@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import authReducer from './authReducer';
+import { authReducer, signupReducer } from './authReducer';
 import errorReducer from './errorReducer';
 // import Cookies from 'js-cookie';
 
@@ -15,6 +15,7 @@ import errorReducer from './errorReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
+    signup: signupReducer,
     error: errorReducer
 });
 

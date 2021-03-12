@@ -5,7 +5,8 @@ const Home = () => {
     return (
         <div>
             <p>MERN STACK SOCIAL MEDIA AUTHENTICATION</p>
-            <Link to='/login'>LOGIN</Link>
+            <Link to='/login'>LOG IN</Link>
+            <Link to='signup'>SIGN UP</Link>
         </div>
     )
 };

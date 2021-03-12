@@ -21,7 +21,7 @@ const FacebookButton = (props) => {
     }
 
     return (
-        <div style={{marginTop:'-200px', width: '60vw', marginLeft:'auto', marginRight:'auto'}}>
+        <div>
             <FacebookLogin
                 appId={FACEBOOK_CLIENT_ID}
                 autoLoad={false}
@@ -29,7 +29,7 @@ const FacebookButton = (props) => {
                 onClick={componentClicked}
                 callback={responseFacebook}
                 render={renderProps => (
-                    <FontAwesomeIcon onClick={renderProps.onClick} icon={faFacebookSquare} style={{fontSize:'36px', color:'#4c69ba'}}/>                    
+                    <FontAwesomeIcon onClick={renderProps.onClick} icon={faFacebookSquare} style={{fontSize:'32px', color:'#4c69ba'}}/>                    
                 )}
             />
             {/* <a href="http://localhost:3001/auth/facebook">Login with Facebook</a>*/}

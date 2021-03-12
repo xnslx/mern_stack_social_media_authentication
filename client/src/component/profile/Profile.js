@@ -3,14 +3,15 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import {getProfileData} from '../../action/index';
 const Profile = (props) => {
-    
+
     useEffect(() => {
         props.dispatch(getProfileData())
     },[])
 
     return (
-        <div>
-             {props.auth.user.name}Finally you are getting here!
+        <div style={{textAlign:'center',marginTop:'200px'}}>
+             <p>Hey there, <strong>{props.auth.user.name}</strong>!
+             Finally you are getting here!<span role="img" aria-label="clap">🖐</span></p>
         </div>
     )
 };

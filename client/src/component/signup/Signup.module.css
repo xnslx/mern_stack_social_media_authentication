@@ -1,0 +1,89 @@
+.Container {
+    /* background-color: red; */
+    width: 90vw;
+    height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.LabelContainer {
+    /* background-color: red; */
+    margin-bottom: 4px;
+}
+
+.Input {
+    width: 88vw;
+    height: 40px;
+    margin-bottom: 12px;
+    border-style: solid 1px black;
+}
+
+.Button {
+    margin-top: 12px;
+    width: 90vw;
+    height: 48px;
+    border: none;
+    background-color: #fc5359;
+    color: #1a1918;
+    font-weight: 600;
+}
+
+.Link {
+    position: absolute;
+    right: 20px;
+    margin-right: 20px;
+    text-decoration: none;
+    color: black
+}
+
+.CloseLink {
+    position: absolute;
+    right: 20px;
+    margin-right: 20px;
+    text-decoration: none;
+    color: black
+}
+
+.ErrorMessage {
+    background-color: red;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    height: auto;
+    width: 84vw;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 12px;
+    margin-bottom: 24px;
+    border: #fc5359;
+    background-color: #ffddde;
+    color: #fc5359;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.ErrorMessage {
+    /* background-color: yellow; */
+    text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+    .Container {
+        width: 40vw;
+    }
+    .Input {
+        width: 40vw;
+    }
+    .Button {
+        width: 41vw;
+    }
+    .ErrorMessage {
+        width: 38vw;
+    }
+    .Link {
+        margin-right: 440px;
+    }
+}

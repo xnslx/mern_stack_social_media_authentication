@@ -1,5 +1,6 @@
 import './App.css';
 import Login from './component/login/Login';
+import Signup from './component/signup/Signup';
 import Home from './component/home/Home';
 import Profile from './component/profile/Profile';
 import {Switch,BrowserRouter as Router, Route} from 'react-router-dom';
@@ -16,6 +17,7 @@ function App() {
         <Switch>
           <Route path='/' exact component={Home}/>
           <Route path='/login' component={Login}/>
+          <Route path='/signup' component={Signup}/>
           <Route path='/profile' component={Profile}/>
         </Switch>
       </Router>

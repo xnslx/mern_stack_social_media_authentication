@@ -28,9 +28,12 @@ exports.postLogin = (req, res, next) => {
 
 exports.postSignup = (req, res, next) => {
     passport.authenticate('signup', (err, user, info) => {
+        console.log('err', err)
+        console.log('user', user)
+        console.log('info', info)
         if (err !== null || info !== undefined) {
             console.log(err)
-            return res.status(403).json(info.message)
+            return res.status(403).json({ message: info.message })
         }
         if (user) {
             res.status(201).json({ message: 'you successfully sign up!', user: user });

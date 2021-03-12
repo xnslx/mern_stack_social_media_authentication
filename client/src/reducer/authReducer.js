@@ -6,7 +6,7 @@ const initialState = {
     loading: true
 }
 
-const authReducer = (state = initialState, action) => {
+export const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.LOGIN_REQUEST:
         case actionTypes.FACEBOOK_LOGIN_REQUEST:
@@ -39,4 +39,25 @@ const authReducer = (state = initialState, action) => {
     }
 };
 
-export default authReducer;
+export const signupReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case actionTypes.SIGNUP_REQUEST:
+            return {
+                loading: true
+            }
+        case actionTypes.SIGNUP_SUCCESS:
+            return {
+                loading: false,
+                user: action.payload
+            }
+        case actionTypes.SIGNUP_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        default:
+            return state
+    }
+}
+
+// export default authReducer;
