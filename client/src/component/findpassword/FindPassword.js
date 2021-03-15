@@ -35,7 +35,7 @@ const FindPassword = (props) => {
         <div>
         <Link to='/' className={classes.Link} >BACK TO HOME</Link>
         {props.error.hasError === true && (
-            <div>
+            <div className={classes.ErrorMessage}>
                 <p>{props.error.message}</p>
             </div>
         )}
