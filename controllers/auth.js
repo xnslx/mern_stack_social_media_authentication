@@ -68,6 +68,12 @@ exports.postSignup = (req, res, next) => {
     //     })
 }
 
+
+exports.getLogout = (req, res, next) => {
+    res.clearCookie('access_token');
+    res.status(200).json({ message: 'You have successfully log out.' })
+}
+
 exports.postFindPassword = (req, res, next) => {
     const email = req.body.email
     const errors = validationResult(req);

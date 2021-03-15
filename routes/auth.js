@@ -9,6 +9,8 @@ router.post('/login', authController.postLogin)
 
 router.post('/signup', authController.postSignup)
 
+router.get('/logout', passport.authenticate('jwt', { session: false }), authController.getLogout)
+
 router.post('/findpassword', [
     body('email')
     .isEmail()
@@ -45,13 +47,6 @@ router.post('/auth/facebook', passport.authenticate('facebook-token', { session:
 
 
 router.post('/auth/google', authController.postGoogleInfo)
-
-
-
-
-
-
-
 
 router.get('/auth/twitter', passport.authenticate('twitter'))
 

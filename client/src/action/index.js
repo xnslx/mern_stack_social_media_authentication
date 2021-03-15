@@ -63,13 +63,6 @@ export const facebookLogin = (data, history) => (dispatch) => {
 
 export const googleLogin = (data, history) => (dispatch) => {
     console.log('data', data)
-        // axios({
-        //     method: "POST",
-        //     url: "http://localhost:3001/auth/google",
-        //     data: { tokenId: data.tokenId }
-        // }).then(response => {
-        //     console.log('response', response)
-        // })
     axios.post('http://localhost:3001/auth/google', {
         tokenId: data.tokenId
     }).then(response => {
@@ -113,4 +106,31 @@ export const retrievePassword = (email) => (dispatch) => {
                 payload: err.response.data
             })
         })
+}
+
+export const resetPassword = (verifiedPassword, history) => (dispatch) => {
+    axios.post('http://localhost:3001/updatepassword', verifiedPassword)
+        .then(result => {
+            dispatch(getBackendData(result.data))
+            history.push('/login')
+        })
+        .catch(err => {
+            dispatch({
+                type: 'GET_ERROR',
+                payload: err.response.data
+            })
+        })
+}
+
+export const logout = (history) => (dispatch) => {
+    axios.get('http://localhost:3001/logout').then(result => {
+        console.log(result)
+    }).catch(err => {
+        console.log(err)
+    })
+    dispatch({
+        type: 'LOGOUT'
+    })
+    localStorage.removeItem('userInfo')
+    history.push('/')
 }
