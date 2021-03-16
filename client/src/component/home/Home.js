@@ -1,12 +1,13 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import classes from './Home.module.css';
 
 const Home = () => {
     return (
-        <div>
-            <p>MERN STACK SOCIAL MEDIA AUTHENTICATION</p>
-            <Link to='/login'>LOG IN</Link>
-            <Link to='signup'>SIGN UP</Link>
+        <div className={classes.Container}>
+            <p>Welcome to my MERN stack authentication.</p>
+            <Link to='signup' className={classes.Link}>SIGN UP</Link>
+            <Link to='/login' className={classes.Link}>LOG IN</Link>
         </div>
     )
 };

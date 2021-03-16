@@ -1,0 +1,25 @@
+.Container {
+    /* background-color: red; */
+    margin-top: 160px;
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.Link {
+    /* position: absolute; */
+    right: 20px;
+    margin-right: 20px;
+    text-decoration: none;
+    /* color: black; */
+    display: flex;
+    flex-direction: column;
+    border: #fc5359;
+    background-color: #ffddde;
+    color: #fc5359;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 36px 12px 36px;
+    margin: 12px;
+}

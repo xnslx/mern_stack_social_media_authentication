@@ -1,0 +1,9 @@
+.Button {
+    border: #fc5359;
+    background-color: #ffddde;
+    color: #fc5359;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 36px 12px 36px;
+    margin: 12px;
+}
