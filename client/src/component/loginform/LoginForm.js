@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import classes from './LoginForm.module.css';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -8,7 +8,7 @@ import {withRouter} from 'react-router';
 const LoginForm = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const [error, setError] = useState([]);
+    const [error, setError] = useState([]);
 
     const currentUser = {
         email: email,
@@ -16,15 +16,17 @@ const LoginForm = (props) => {
     }
 
 
-    // useEffect(() => {
-    //     getErrorMessage()
-    // }, [props.error])
+    useEffect(() => {
+        getErrorMessage()
+    })
 
-    // const getErrorMessage = () => {
-    //     if(props.error !== null) {
-    //     setError(props.error.message);
-    //     }
-    // }
+    const getErrorMessage = () => {
+        if(props.error !== null) {
+        setError(props.error.message);
+        }
+    }
+
+    console.log('error',error)
 
     const loginSubmitHandler = (e) => {
         e.preventDefault();
@@ -37,7 +39,7 @@ const LoginForm = (props) => {
             <h1 style={{textAlign:'center'}}>Log In</h1>
             <br/>
             <br/>
-            {props.auth.error? <p className={classes.ErrorMessage}>{props.auth.error.message}</p> : null}
+            {error.length > 0? <p className={classes.ErrorMessage}>{error}</p> : null}
             <div className={classes.Form}>
                 <form action="" onSubmit={loginSubmitHandler}>
                     <div>

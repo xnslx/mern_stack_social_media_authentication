@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {signupUser} from '../../action/index';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
@@ -10,6 +10,7 @@ const Signup = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState([]);
 
 
     const newUser = {
@@ -19,15 +20,17 @@ const Signup = (props) => {
         confirmPassword:confirmPassword
     }
 
-    // useEffect(() => {
-    //     getErrorMessage()
-    // }, [props.error])
+    useEffect(() => {
+        getErrorMessage()
+    })
 
-    // const getErrorMessage = () => {
-    //     if(props.error !== null) {
-    //     setError(props.error.errors)
-    //     }
-    // }
+    const getErrorMessage = () => {
+        if(props.error !== null) {
+        setError(props.error.message);
+        }
+    }
+
+    console.log('error',error)
         
     const submitHandler = (e) => {
         e.preventDefault();
@@ -39,7 +42,8 @@ const Signup = (props) => {
         <div className={classes.Container}>
             <Link to='/' className={classes.CloseLink} >X</Link>
             <h1 style={{textAlign:'center'}}>SIGN UP</h1>
-            {props.error? <p className={classes.ErrorMessage}>{props.error.message}</p> : null}
+            {/* {props.error? <p className={classes.ErrorMessage}>{props.error.message}</p> : null} */}
+            {error.length > 0? <p className={classes.ErrorMessage}>{error}</p> : null}
             <div>
                 <form action="" onSubmit={submitHandler}>
                     <div>

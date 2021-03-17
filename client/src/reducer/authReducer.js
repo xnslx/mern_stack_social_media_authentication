@@ -7,6 +7,7 @@ const initialState = {
 }
 
 export const loginReducer = (state = initialState, action) => {
+    console.log('action', action)
     switch (action.type) {
         case actionTypes.LOGIN_REQUEST:
         case actionTypes.FACEBOOK_LOGIN_REQUEST:
@@ -29,7 +30,6 @@ export const loginReducer = (state = initialState, action) => {
         case actionTypes.GOOGLE_LOGIN_FAIL:
             return {
                 loading: false,
-                error: action.payload,
                 isAuthenticated: false
             }
         case actionTypes.USER_LOGOUT:
