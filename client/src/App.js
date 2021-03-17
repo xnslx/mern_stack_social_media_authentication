@@ -5,6 +5,7 @@ import Home from './component/home/Home';
 import Profile from './component/profile/Profile';
 import FindPassword from './component/findpassword/FindPassword';
 import ResetPassword from './component/resetpassword/ResetPassword';
+import PrivateRoute from './component/PrivateRoute';
 import {Switch,BrowserRouter as Router, Route} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './reducer/index';
@@ -20,9 +21,9 @@ function App() {
           <Route path='/' exact component={Home}/>
           <Route path='/login' component={Login}/>
           <Route path='/signup' component={Signup}/>
-          <Route path='/profile' component={Profile}/>
-          <Route path='/findpassword' component={FindPassword}/>
-          <Route path='/reset/:token' component={ResetPassword}/>
+          <PrivateRoute path='/profile' component={Profile}/>
+          <PrivateRoute path='/findpassword' component={FindPassword}/>
+          <PrivateRoute path='/reset/:token' component={ResetPassword}/>
         </Switch>
       </Router>
     </Provider>
