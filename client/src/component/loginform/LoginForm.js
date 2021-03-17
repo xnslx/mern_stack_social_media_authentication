@@ -37,8 +37,7 @@ const LoginForm = (props) => {
             <h1 style={{textAlign:'center'}}>Log In</h1>
             <br/>
             <br/>
-            {props.error? <p className={classes.ErrorMessage}>{props.error.message}</p> : null}
-            {/* {error.length > 0? <p className={classes.ErrorMessage}>{error}</p> : null} */}
+            {props.auth.error? <p className={classes.ErrorMessage}>{props.auth.error.message}</p> : null}
             <div className={classes.Form}>
                 <form action="" onSubmit={loginSubmitHandler}>
                     <div>

@@ -3,9 +3,5 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    margin-top: -200px;
-}
-
-body {
-    /* background-color: #fdf6ef; */
+    margin-top: -160px;
 }

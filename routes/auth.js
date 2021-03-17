@@ -48,12 +48,12 @@ router.post('/auth/facebook', passport.authenticate('facebook-token', { session:
 
 router.post('/auth/google', authController.postGoogleInfo)
 
-router.get('/auth/twitter', passport.authenticate('twitter'))
+// router.get('/auth/twitter', passport.authenticate('twitter'))
 
-router.get('/auth/twitter/callback', passport.authenticate('twitter', {
-    successRedirect: '/user/profile',
-    failureRedirect: '/login'
-}), authController.getTwitterCallback)
+// router.get('/auth/twitter/callback', passport.authenticate('twitter', {
+//     successRedirect: '/user/profile',
+//     failureRedirect: '/login'
+// }), authController.getTwitterCallback)
 
 router.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }))
 
