@@ -30,7 +30,7 @@ const Signup = (props) => {
         }
     }
 
-    console.log('error',error)
+    // console.log(error)
         
     const submitHandler = (e) => {
         e.preventDefault();
@@ -43,7 +43,8 @@ const Signup = (props) => {
             <Link to='/' className={classes.CloseLink} >X</Link>
             <h1 style={{textAlign:'center'}}>SIGN UP</h1>
             {/* {props.error? <p className={classes.ErrorMessage}>{props.error.message}</p> : null} */}
-            {error.length > 0? <p className={classes.ErrorMessage}>{error}</p> : null}
+            {/* {error.length > 0? <p className={classes.ErrorMessage}>{error}</p> : null} */}
+            {props.error >0? props.error.errors.map(err => <ul className={classes.ErrorMessage} key={err.id}><li>{err.msg}</li></ul>):null}
             <div>
                 <form action="" onSubmit={submitHandler}>
                     <div>

@@ -5,9 +5,45 @@ const authController = require('../controllers/auth');
 const passport = require('passport');
 const passportConfig = require('../middleware/auth-passport');
 
-router.post('/login', authController.postLogin)
+router.post('/login', [
+    body('email')
+    .isEmail()
+    .withMessage('Please enter a valid email.')
+    .normalizeEmail(),
+    body('password', 'Password has to be valid.')
+    .isLength({ min: 5, max: 20 })
+    .isAlphanumeric()
+    .trim()
+], authController.postLogin)
 
-router.post('/signup', authController.postSignup)
+router.post('/signup', [
+    body('name')
+    .trim(),
+    check('email')
+    .isEmail()
+    .withMessage('Please enter a valid email')
+    .custom((value, { req }) => {
+        console.log('value', value)
+        return User.findOne({ email: value })
+            .then(userDoc => {
+                if (userDoc) {
+                    return Promise.reject('E-mail already in use')
+                }
+            })
+    })
+    .normalizeEmail(),
+    check('confirmPassword')
+    .trim()
+    .custom((value, { req }) => {
+        console.log('confirmpassword', value)
+        console.log('req.body.password', req.body.password)
+        if (value !== req.body.password) {
+            throw new Error('Password has to be matched!')
+        } else {
+            return value;
+        }
+    })
+], authController.postSignup)
 
 router.get('/logout', passport.authenticate('jwt', { session: false }), authController.getLogout)
 
