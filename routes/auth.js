@@ -4,6 +4,7 @@ const router = express.Router();
 const authController = require('../controllers/auth');
 const passport = require('passport');
 const passportConfig = require('../middleware/auth-passport');
+const User = require('../model/users');
 
 router.post('/login', [
     body('email')
@@ -19,7 +20,7 @@ router.post('/login', [
 router.post('/signup', [
     body('name')
     .trim(),
-    check('email')
+    body('email')
     .isEmail()
     .withMessage('Please enter a valid email')
     .custom((value, { req }) => {

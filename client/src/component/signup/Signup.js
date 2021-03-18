@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {signupUser} from '../../action/index';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
@@ -10,7 +10,7 @@ const Signup = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState([]);
+    // const [error, setError] = useState([]);
 
 
     const newUser = {
@@ -20,15 +20,15 @@ const Signup = (props) => {
         confirmPassword:confirmPassword
     }
 
-    useEffect(() => {
-        getErrorMessage()
-    })
+    // useEffect(() => {
+    //     getErrorMessage()
+    // })
 
-    const getErrorMessage = () => {
-        if(props.error !== null) {
-        setError(props.error.message);
-        }
-    }
+    // const getErrorMessage = () => {
+    //     if(props.error !== null) {
+    //     setError(props.error.message);
+    //     }
+    // }
 
     // console.log(error)
         
@@ -44,7 +44,7 @@ const Signup = (props) => {
             <h1 style={{textAlign:'center'}}>SIGN UP</h1>
             {/* {props.error? <p className={classes.ErrorMessage}>{props.error.message}</p> : null} */}
             {/* {error.length > 0? <p className={classes.ErrorMessage}>{error}</p> : null} */}
-            {props.error >0? props.error.errors.map(err => <ul className={classes.ErrorMessage} key={err.id}><li>{err.msg}</li></ul>):null}
+            {props.error? props.error.map((err,index)=> <ul className={classes.ErrorMessage} key={index}><li>{err.msg}</li></ul>):null}
             <div>
                 <form action="" onSubmit={submitHandler}>
                     <div>

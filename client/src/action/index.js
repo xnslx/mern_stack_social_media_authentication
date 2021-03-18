@@ -36,12 +36,12 @@ export const signupUser = (userInfo, history) => (dispatch) => {
         .catch(err => {
             console.log(err)
             dispatch({
-                type: 'SIGNUP_FAIL',
-                payload: err.response.data
-            })
-            dispatch({
-                type: 'CLEAR_ERROR'
-            })
+                    type: 'SIGNUP_FAIL',
+                    payload: err.response.data
+                })
+                // dispatch({
+                //     type: 'CLEAR_ERROR'
+                // })
         })
 }
 
