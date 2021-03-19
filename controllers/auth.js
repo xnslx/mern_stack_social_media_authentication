@@ -10,11 +10,15 @@ const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_APP_ID);
 
 exports.postLogin = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array(), type: 'validator' })
+    }
     passport.authenticate('login', (err, user, info) => {
         console.log('info', info)
         console.log('postlogin', user)
         if (err || !user) {
-            return res.status(403).json({ message: info.message })
+            return res.status(403).json({ message: info.message, type: 'passport' })
         }
         if (user) {
             const token = jwt.sign({ sub: user.id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
@@ -29,7 +33,7 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json(errors.array())
+        return res.status(422).json({ errors: errors.array() })
     }
     passport.authenticate('signup', (err, user, info) => {
         if (err !== null || info !== undefined) {

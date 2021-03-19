@@ -11,7 +11,7 @@ router.post('/login', [
     .isEmail()
     .withMessage('Please enter a valid email.')
     .normalizeEmail(),
-    body('password', 'Password has to be valid.')
+    check('password', 'Password has to be valid.')
     .isLength({ min: 5, max: 20 })
     .isAlphanumeric()
     .trim()
@@ -33,6 +33,10 @@ router.post('/signup', [
             })
     })
     .normalizeEmail(),
+    body('password', 'Password has to be at least 5 characters.')
+    .isLength({ min: 5, max: 20 })
+    .isAlphanumeric()
+    .trim(),
     check('confirmPassword')
     .trim()
     .custom((value, { req }) => {

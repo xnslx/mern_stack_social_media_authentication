@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {signupUser} from '../../action/index';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
@@ -10,7 +10,7 @@ const Signup = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    // const [error, setError] = useState([]);
+    const [error, setError] = useState([]);
 
 
     const newUser = {
@@ -20,17 +20,31 @@ const Signup = (props) => {
         confirmPassword:confirmPassword
     }
 
-    // useEffect(() => {
-    //     getErrorMessage()
-    // })
+    useEffect(() => {
+        getErrorMessage()
+    }, [])
 
-    // const getErrorMessage = () => {
-    //     if(props.error !== null) {
-    //     setError(props.error.message);
-    //     }
-    // }
+    let errorMessage;
 
-    // console.log(error)
+    const getErrorMessage = () => {
+        if(props.error.type === "validator") {
+        setError(props.error.message.errors);
+        errorMessage = (
+                <ul >{error.map((err, index) => (
+                    <li className={classes.ErrorMessage} key={index}>{err.msg}</li>
+                ))}</ul>
+            )
+        } else if(props.error.type === "passport") {
+            setError(props.error.message.message);
+            errorMessage = (
+                <p>{error}</p>
+            )
+        }
+    }
+
+
+    console.log('error',error)
+    console.log('errorMessage', errorMessage)
         
     const submitHandler = (e) => {
         e.preventDefault();
@@ -42,9 +56,9 @@ const Signup = (props) => {
         <div className={classes.Container}>
             <Link to='/' className={classes.CloseLink} >X</Link>
             <h1 style={{textAlign:'center'}}>SIGN UP</h1>
-            {/* {props.error? <p className={classes.ErrorMessage}>{props.error.message}</p> : null} */}
-            {/* {error.length > 0? <p className={classes.ErrorMessage}>{error}</p> : null} */}
-            {props.error? props.error.map((err,index)=> <ul className={classes.ErrorMessage} key={index}><li>{err.msg}</li></ul>):null}
+            {/* {props.error? props.error.errors.map((err,index)=> <ul className={classes.ErrorMessage} key={index}><li>{err.msg}</li></ul>):null} */}
+            {/* {error.length> 0? error.map((err,index) => <ul className={classes.ErrorMessage} key={index}><li>{err.msg}</li></ul>):null} */}
+            {errorMessage}
             <div>
                 <form action="" onSubmit={submitHandler}>
                     <div>
@@ -99,7 +113,7 @@ const mapStateToProps = (state) => {
     console.log('state',state)
     return {
         auth: state.auth,
-        error: state.error.message
+        error: state.error
     }
 }
 export default connect(mapStateToProps)(withRouter(Signup));

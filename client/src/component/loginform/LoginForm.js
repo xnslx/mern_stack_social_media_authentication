@@ -8,30 +8,44 @@ import {withRouter} from 'react-router';
 const LoginForm = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState([]);
+    const [error, setError] = useState('');
 
     const currentUser = {
         email: email,
         password: password
     }
 
-
-    useEffect(() => {
-        getErrorMessage()
-    })
-
-    const getErrorMessage = () => {
-        if(props.error !== null) {
-        setError(props.error.message);
-        }
-    }
-
-    console.log('error',error)
-
     const loginSubmitHandler = (e) => {
         e.preventDefault();
         props.dispatch(loginUser(currentUser, props.history));
     }
+
+    useEffect(() => {
+        getErrorMessage()
+    }, [])
+
+    let errorMessage;
+
+    const getErrorMessage = () => {
+        if(props.error.type === "validator") {
+        setError(props.error.message.errors);
+        errorMessage = (
+                <ul >{error.map((err, index) => (
+                    <li className={classes.ErrorMessage} key={index}>{err.msg}</li>
+                ))}</ul>
+            )
+        } else if(props.error.type === "passport") {
+            setError(props.error.message.message);
+            errorMessage = (
+                <p>{error}</p>
+            )
+        }
+    }
+
+
+    console.log('error',error)
+    console.log('errorMessage', errorMessage)
+
     return (
         <div>
             <div className={classes.Container}>
@@ -39,7 +53,7 @@ const LoginForm = (props) => {
             <h1 style={{textAlign:'center'}}>Log In</h1>
             <br/>
             <br/>
-            {error.length > 0? <p className={classes.ErrorMessage}>{error}</p> : null}
+            {errorMessage}
             <div className={classes.Form}>
                 <form action="" onSubmit={loginSubmitHandler}>
                     <div>
@@ -76,7 +90,7 @@ const mapStateToProps = (state) => {
     console.log('state',state)
     return {
         auth: state.auth,
-        error: state.error.message
+        error: state.error
     }
 }
 

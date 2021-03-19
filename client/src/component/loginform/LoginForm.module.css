@@ -50,8 +50,9 @@
 }
 
 .ErrorMessage {
+    list-style: none;
     text-align: center;
-    height: 24px;
+    /* height: 24px; */
     width: 84vw;
     margin-left: auto;
     margin-right: auto;

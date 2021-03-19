@@ -2,7 +2,8 @@
 
 const initialState = {
     message: null,
-    hasError: false
+    hasError: false,
+    type: ""
 };
 
 const errorReducer = (state = initialState, action) => {
@@ -14,12 +15,15 @@ const errorReducer = (state = initialState, action) => {
             return {
                 ...state,
                 message: action.payload,
-                hasError: true
+                hasError: true,
+                type: action.payload.type
             }
         case 'CLEAR_ERROR':
             return {
                 ...state,
-                message: null
+                message: '',
+                hasError: false,
+                type: ''
             }
         default:
             return state
