@@ -45,28 +45,6 @@ const LoginForm = (props) => {
             <p className={classes.ErrorMessage} >{error}</p>
         )
     }
-
-    // useEffect(() => {
-    //     getErrorMessage()
-    // },[props.error])
-
-
-    // const getErrorMessage = () => {
-    //     if(props.error && props.error.type === "validator") {
-    //     setError(props.error.message.errors)
-    //     errorMessage = (<ul className={classes.ErrorMessage}>{props.error.message.errors.map((err, index) => (
-    //         <li key={index}>{err.msg}</li>
-    //     ))}</ul>)
-    //     } else if(props.error && props.error.type === "passport") {
-    //         errorMessage = (
-    //             <p className={classes.ErrorMessage} >{props.error.message.message}</p>
-    //         )
-    //     }
-    // }
-
-    // {props.error && props.error.type === "validator" ? <ul>{props.error.message.errors.map((err, index) => (
-    //             <li className={classes.ErrorMessage} key={index}>{err.msg}</li>
-    //         ))}</ul> : props.error && props.error.type === "passport" ?<p>{props.error.message.message}</p> :null}
     
 
     return (

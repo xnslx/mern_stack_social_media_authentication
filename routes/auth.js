@@ -11,10 +11,10 @@ router.post('/login', [
     .isEmail()
     .withMessage('Please enter a valid email.')
     .normalizeEmail(),
-    check('password', 'Password has to be valid.')
+    body('password')
     .isLength({ min: 5, max: 20 })
-    .isAlphanumeric()
     .trim()
+    .withMessage('Password has to be valid.')
 ], authController.postLogin)
 
 router.post('/signup', [
