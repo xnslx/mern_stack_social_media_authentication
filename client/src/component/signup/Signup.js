@@ -21,7 +21,6 @@ const Signup = (props) => {
         confirmPassword:confirmPassword
     }
 
-   
         
     const submitHandler = (e) => {
         e.preventDefault();
@@ -109,7 +108,6 @@ const Signup = (props) => {
 };
 
 const mapStateToProps = (state) => {
-    console.log('state',state)
     return {
         auth: state.auth,
         error: state.error
