@@ -8,7 +8,8 @@ import {withRouter} from 'react-router';
 const LoginForm = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null)
+    const [errorType, setErrorType] = useState(null)
 
     const currentUser = {
         email: email,
@@ -20,31 +21,53 @@ const LoginForm = (props) => {
         props.dispatch(loginUser(currentUser, props.history));
     }
 
-    useEffect(() => {
-        getErrorMessage()
-    }, [])
-
     let errorMessage;
 
-    const getErrorMessage = () => {
+    useEffect(() => {
         if(props.error.type === "validator") {
-        setError(props.error.message.errors);
-        errorMessage = (
-                <ul >{error.map((err, index) => (
-                    <li className={classes.ErrorMessage} key={index}>{err.msg}</li>
-                ))}</ul>
-            )
+            setError(props.error.message.errors)
+            setErrorType("validator")
         } else if(props.error.type === "passport") {
-            setError(props.error.message.message);
-            errorMessage = (
-                <p>{error}</p>
-            )
+            setError(props.error.message.message)
+            setErrorType("passport")
         }
+    },[props.error, props.error.type])
+
+    console.log('error', error)
+
+    
+    if(error && errorType === "validator") {
+        errorMessage = (<ul className={classes.ErrorMessage}>{error.map((err, index) => (
+            <li key={index}>{err.msg}</li>
+        ))}</ul>)
+    } else if(error && errorType === "passport") {
+        errorMessage = (
+            <p className={classes.ErrorMessage} >{error}</p>
+        )
     }
 
+    // useEffect(() => {
+    //     getErrorMessage()
+    // },[props.error])
 
-    console.log('error',error)
-    console.log('errorMessage', errorMessage)
+
+    // const getErrorMessage = () => {
+    //     if(props.error && props.error.type === "validator") {
+    //     setError(props.error.message.errors)
+    //     errorMessage = (<ul className={classes.ErrorMessage}>{props.error.message.errors.map((err, index) => (
+    //         <li key={index}>{err.msg}</li>
+    //     ))}</ul>)
+    //     } else if(props.error && props.error.type === "passport") {
+    //         errorMessage = (
+    //             <p className={classes.ErrorMessage} >{props.error.message.message}</p>
+    //         )
+    //     }
+    // }
+
+    // {props.error && props.error.type === "validator" ? <ul>{props.error.message.errors.map((err, index) => (
+    //             <li className={classes.ErrorMessage} key={index}>{err.msg}</li>
+    //         ))}</ul> : props.error && props.error.type === "passport" ?<p>{props.error.message.message}</p> :null}
+    
 
     return (
         <div>

@@ -33,12 +33,12 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() })
+        return res.status(422).json({ errors: errors.array(), type: 'validator' })
     }
     passport.authenticate('signup', (err, user, info) => {
         if (err !== null || info !== undefined) {
             console.log(err)
-            return res.status(403).json({ message: info.message })
+            return res.status(403).json({ message: info.message, type: 'passport' })
         }
         if (user) {
             res.status(201).json({ message: 'you successfully sign up!', user: user });

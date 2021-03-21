@@ -11,14 +11,14 @@ export const loginUser = (currentUser, history) => (dispatch) => {
             history.push('/profile')
         })
         .catch(err => {
+            dispatch({
+                type: 'LOGIN_FAIL',
+                payload: err.response.data
+            })
             console.log('err', err)
             dispatch({
-                    type: 'LOGIN_FAIL',
-                    payload: err.response.data
-                })
-                // dispatch({
-                //     type: 'CLEAR_ERROR'
-                // })
+                type: 'CLEAR_ERROR'
+            })
         })
 }
 

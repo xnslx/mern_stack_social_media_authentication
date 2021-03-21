@@ -10,7 +10,8 @@ const Signup = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState([]);
+    const [error, setError] = useState(null)
+    const [errorType, setErrorType] = useState(null)
 
 
     const newUser = {
@@ -20,44 +21,42 @@ const Signup = (props) => {
         confirmPassword:confirmPassword
     }
 
-    useEffect(() => {
-        getErrorMessage()
-    }, [])
-
-    let errorMessage;
-
-    const getErrorMessage = () => {
-        if(props.error.type === "validator") {
-        setError(props.error.message.errors);
-        errorMessage = (
-                <ul >{error.map((err, index) => (
-                    <li className={classes.ErrorMessage} key={index}>{err.msg}</li>
-                ))}</ul>
-            )
-        } else if(props.error.type === "passport") {
-            setError(props.error.message.message);
-            errorMessage = (
-                <p>{error}</p>
-            )
-        }
-    }
-
-
-    console.log('error',error)
-    console.log('errorMessage', errorMessage)
+   
         
     const submitHandler = (e) => {
         e.preventDefault();
         props.dispatch(signupUser(newUser, props.history))
     }
 
+    let errorMessage;
+
+    useEffect(() => {
+        if(props.error.type === "validator") {
+            setError(props.error.message.errors)
+            setErrorType("validator")
+        } else if(props.error.type === "passport") {
+            setError(props.error.message.message)
+            setErrorType("passport")
+        }
+    },[props.error, props.error.type])
+
+    console.log('error', error)
+
+    
+    if(error && errorType === "validator") {
+        errorMessage = (<ul className={classes.ErrorMessage}>{error.map((err, index) => (
+            <li key={index}>{err.msg}</li>
+        ))}</ul>)
+    } else if(error && errorType === "passport") {
+        errorMessage = (
+            <p className={classes.ErrorMessage} >{error}</p>
+        )
+    }
 
     return (
         <div className={classes.Container}>
             <Link to='/' className={classes.CloseLink} >X</Link>
             <h1 style={{textAlign:'center'}}>SIGN UP</h1>
-            {/* {props.error? props.error.errors.map((err,index)=> <ul className={classes.ErrorMessage} key={index}><li>{err.msg}</li></ul>):null} */}
-            {/* {error.length> 0? error.map((err,index) => <ul className={classes.ErrorMessage} key={index}><li>{err.msg}</li></ul>):null} */}
             {errorMessage}
             <div>
                 <form action="" onSubmit={submitHandler}>
