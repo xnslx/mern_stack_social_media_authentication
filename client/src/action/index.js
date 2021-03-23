@@ -105,6 +105,9 @@ export const retrievePassword = (email) => (dispatch) => {
                 type: 'GET_ERROR',
                 payload: err.response.data
             })
+            dispatch({
+                type: 'CLEAR_ERROR'
+            })
         })
 }
 

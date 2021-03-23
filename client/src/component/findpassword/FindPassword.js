@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {retrievePassword} from '../../action/index';
 import {Link} from 'react-router-dom';
@@ -6,7 +6,8 @@ import classes from './FindPassword.module.css';
 
 const FindPassword = (props) => {
     const [email, setEmail] = useState('');
-    // const [error, setError] = useState({});
+    const [error, setError] = useState(null)
+    const [errorType, setErrorType] = useState(null)
 
     const verifiedEmail = {
         email: email
@@ -30,15 +31,41 @@ const FindPassword = (props) => {
         setEmail('')
     }
 
+    let errorMessage;
+
+    useEffect(() => {
+        if(props.error.type === "validator") {
+            setError(props.error.message.errors)
+            setErrorType("validator")
+        } else if(props.error.type === "passport") {
+            setError(props.error.message.message)
+            setErrorType("passport")
+        }
+    },[props.error, props.error.type])
+
+    console.log('error', error)
+
+    
+    if(error && errorType === "validator") {
+        errorMessage = (<ul className={classes.ErrorMessage}>{error.map((err, index) => (
+            <li key={index}>{err.msg}</li>
+        ))}</ul>)
+    } else if(error && errorType === "passport") {
+        errorMessage = (
+            <p className={classes.ErrorMessage} >{error}</p>
+        )
+    }
+
 
     return (
         <div>
         <Link to='/' className={classes.Link} >BACK TO HOME</Link>
-        {props.error.hasError === true && (
+        {/* {props.error.hasError === true && (
             <div className={classes.ErrorMessage}>
                 <p>{props.error.message}</p>
             </div>
-        )}
+        )} */}
+        {errorMessage}
         {props.backendData === 'Email sent!' && (
             <div className={classes.TextContainer}>
                 <p>Please check your email to reset password!</p>

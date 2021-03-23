@@ -83,7 +83,7 @@ exports.postFindPassword = (req, res, next) => {
     const email = req.body.email
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() })
+        return res.status(422).json({ errors: errors.array(), type: 'validator' })
     }
     User
         .findOne({ email: req.body.email })
@@ -94,7 +94,7 @@ exports.postFindPassword = (req, res, next) => {
                 return res.status(404).json({ message: 'Something went wrong!' })
             } else {
                 if (!user) {
-                    return res.status(404).json('Email not found!')
+                    return res.status(404).json({ message: 'Email not found!', type: 'passport' })
                 } else {
                     const token = crypto.randomBytes(32).toString('hex');
                     user.resetToken = token;
@@ -186,7 +186,7 @@ exports.postUpdatePassword = (req, res, next) => {
     }
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
-    const passwordToken = req.body.passwordToken;
+    const passwordToken = req.body.resetToken;
     let resetUser;
     User.findOne({ resetToken: passwordToken })
         .then(user => {

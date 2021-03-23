@@ -22,7 +22,7 @@ const ResetPassword = (props) => {
     
     const resetPasswordHandler = (e) => {
         e.preventDefault();
-        props.dispatch(resetPassword({password: password, confirmPassword: confirmPassword, passwordToken: token},props.history))
+        props.dispatch(resetPassword({password: password, confirmPassword: confirmPassword, resetToken: token},props.history))
     }
 
 

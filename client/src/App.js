@@ -23,7 +23,7 @@ function App() {
           <Route path='/signup' component={Signup}/>
           <PrivateRoute path='/profile' component={Profile}/>
           <Route path='/findpassword' component={FindPassword}/>
-          <PrivateRoute path='/reset/:token' component={ResetPassword}/>
+          <Route path='/reset/:token' component={ResetPassword}/>
         </Switch>
       </Router>
     </Provider>
