@@ -182,7 +182,7 @@ exports.postFindPassword = (req, res, next) => {
 exports.postUpdatePassword = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() })
+        return res.status(422).json({ errors: errors.array(), type: 'validator' })
     }
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
@@ -190,6 +190,9 @@ exports.postUpdatePassword = (req, res, next) => {
     let resetUser;
     User.findOne({ resetToken: passwordToken })
         .then(user => {
+            if (!user) {
+                return res.status(404).json({ message: 'The link has been expired. Please reset password again.', type: 'passport' })
+            }
             console.log('user', user)
             resetUser = user;
             return bcrypt.hash(confirmPassword, 12)

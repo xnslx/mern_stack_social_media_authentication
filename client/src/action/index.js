@@ -122,6 +122,9 @@ export const resetPassword = (verifiedPassword, history) => (dispatch) => {
                 type: 'GET_ERROR',
                 payload: err.response.data
             })
+            dispatch({
+                type: 'CLEAR_ERROR'
+            })
         })
 }
 
