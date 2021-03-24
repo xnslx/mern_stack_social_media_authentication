@@ -1,14 +1,18 @@
-import React, {useEffect} from 'react';
+import React, {useState,useEffect} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import {getProfileData, logout} from '../../action/index';
 import classes from './Profile.module.css';
 
 const Profile = (props) => {
+    const [name, setName] = useState('')
 
     useEffect(() => {
         props.dispatch(getProfileData())
+
     },[])
+
+    console.log('name', name)
 
     const clickHandler = (e) => {
         e.preventDefault();
@@ -18,6 +22,7 @@ const Profile = (props) => {
     return (
         <div style={{textAlign:'center',marginTop:'200px'}}>
              <p>Hey there, <strong>{props.auth.user.name}</strong>!
+             {/* <p>Hey there, <strong>{props.auth.user.name}</strong>! */}
              Finally you are getting here!<span role="img" aria-label="clap">🖐</span></p>
              <button onClick={clickHandler} className={classes.Button}>LOG OUT</button>
         </div>

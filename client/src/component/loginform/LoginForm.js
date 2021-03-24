@@ -33,7 +33,7 @@ const LoginForm = (props) => {
         }
     },[props.error, props.error.type])
 
-    console.log('error', error)
+    // console.log('error', error)
 
     
     if(error && errorType === "validator") {

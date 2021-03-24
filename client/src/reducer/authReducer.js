@@ -7,7 +7,6 @@ const initialState = {
 }
 
 export const loginReducer = (state = initialState, action) => {
-    console.log('action', action)
     switch (action.type) {
         case actionTypes.LOGIN_REQUEST:
         case actionTypes.FACEBOOK_LOGIN_REQUEST:

@@ -3,19 +3,20 @@ import axios from 'axios';
 export const loginUser = (currentUser, history) => (dispatch) => {
     axios.post('http://localhost:3001/login', currentUser)
         .then(result => {
-            console.log('result', result)
+            // console.log('result', result)
             dispatch({
                 type: 'LOGIN_SUCCESS',
                 payload: result.data.user
             })
+            localStorage.setItem('userInfo', JSON.stringify(result.data.user))
             history.push('/profile')
         })
         .catch(err => {
             dispatch({
-                type: 'LOGIN_FAIL',
-                payload: err.response.data
-            })
-            console.log('err', err)
+                    type: 'LOGIN_FAIL',
+                    payload: err.response.data
+                })
+                // console.log('err', err)
             dispatch({
                 type: 'CLEAR_ERROR'
             })
@@ -25,16 +26,16 @@ export const loginUser = (currentUser, history) => (dispatch) => {
 export const signupUser = (userInfo, history) => (dispatch) => {
     axios.post('http://localhost:3001/signup', userInfo)
         .then(result => {
-            console.log('result', result)
+            // console.log('result', result)
             dispatch({
                 type: 'SIGNUP_SUCCESS',
                 payload: result
             })
             history.push('/login')
-            console.log(result)
+                // console.log(result)
         })
         .catch(err => {
-            console.log(err)
+            // console.log(err)
             dispatch({
                 type: 'SIGNUP_FAIL',
                 payload: err.response.data
@@ -49,7 +50,7 @@ export const facebookLogin = (data, history) => (dispatch) => {
     axios.post('http://localhost:3001/auth/facebook', {
         access_token: data
     }).then(result => {
-        console.log(result)
+        // console.log(result)
         dispatch({
             type: 'FACEBOOK_LOGIN_SUCCESS',
             payload: result.data.user
@@ -66,7 +67,7 @@ export const googleLogin = (data, history) => (dispatch) => {
     axios.post('http://localhost:3001/auth/google', {
         tokenId: data.tokenId
     }).then(response => {
-        console.log('response', response)
+        // console.log('response', response)
         dispatch({
             type: 'GOOGLE_LOGIN_SUCCESS',
             payload: response.data
@@ -77,15 +78,17 @@ export const googleLogin = (data, history) => (dispatch) => {
 }
 
 export const getProfileData = () => (dispatch) => {
-    axios.get('http://localhost:3001/user/profile').then(result => {
-        console.log(result)
-        dispatch({
-            type: 'GET_PROFILE_DATA',
-            payload: result.data.user
+    axios.get('http://localhost:3001/user/profile')
+        .then(result => {
+            // console.log(result)
+            dispatch({
+                type: 'GET_PROFILE_DATA',
+                payload: result.data.user
+            })
         })
-    }).catch(err => {
-        console.log(err)
-    })
+        .catch(err => {
+            console.log(err)
+        })
 }
 
 export const getBackendData = result => {
@@ -130,7 +133,7 @@ export const resetPassword = (verifiedPassword, history) => (dispatch) => {
 
 export const logout = (history) => (dispatch) => {
     axios.get('http://localhost:3001/logout').then(result => {
-        console.log(result)
+        // console.log(result)
     }).catch(err => {
         console.log(err)
     })

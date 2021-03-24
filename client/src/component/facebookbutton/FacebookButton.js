@@ -38,7 +38,6 @@ const FacebookButton = (props) => {
 };
 
 const mapStateToProps = (state) => {
-
     return {
         auth: state.auth,
         error: state.error.message

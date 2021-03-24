@@ -22,8 +22,10 @@ exports.postLogin = (req, res, next) => {
         }
         if (user) {
             const token = jwt.sign({ sub: user.id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
-            res.cookie('access_token', token)
-            return res.status(200).json({ message: 'Log in successfully.', user: user, token: token })
+            res.cookie('access_token', token, {
+                httpOnly: true
+            })
+            return res.status(200).json({ message: 'Log in successfully.', user: user })
         } else {
             res.status(401).json(err)
         }
@@ -221,8 +223,10 @@ exports.postFacebookToken = (req, res, next) => {
     if (req.user) {
         const token = jwt.sign({ sub: req.user.id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
         console.log('token', token)
-        res.cookie('access_token', token)
-        res.status(200).json({ user: req.user, token: token, message: 'you log in successfully' })
+        res.cookie('access_token', token, {
+            httpOnly: true
+        })
+        res.status(200).json({ user: req.user, message: 'you log in successfully' })
     }
 }
 
@@ -299,8 +303,10 @@ exports.postGoogleInfo = (req, res, next) => {
                             }
                             const token = jwt.sign({ _id: data._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
                             const { _id, name, email } = newUser;
-                            res.cookie('access_token', token)
-                            res.status(200).json({ token: token, user: newUser, message: 'A new google user.' })
+                            res.cookie('access_token', token, {
+                                httpOnly: true
+                            })
+                            res.status(200).json({ user: newUser, message: 'A new google user.' })
                         })
                     }
                 }
