@@ -7,10 +7,17 @@ import classes from './Profile.module.css';
 const Profile = (props) => {
     const [name, setName] = useState('')
 
-    useEffect(() => {
-        props.dispatch(getProfileData())
+    // useEffect(() => {
+    //     props.dispatch(getProfileData())
+    // },[])
 
-    },[])
+    useEffect(() => {
+        if(props.auth.user !==null) {
+            setName(props.auth.user.name)
+        } else {
+            setName('')
+        }
+    },[props.auth.user])
 
     console.log('name', name)
 
@@ -21,7 +28,7 @@ const Profile = (props) => {
 
     return (
         <div style={{textAlign:'center',marginTop:'200px'}}>
-             <p>Hey there, <strong>{props.auth.user.name}</strong>!
+             <p>Hey there, <strong>{name}</strong>!
              {/* <p>Hey there, <strong>{props.auth.user.name}</strong>! */}
              Finally you are getting here!<span role="img" aria-label="clap">🖐</span></p>
              <button onClick={clickHandler} className={classes.Button}>LOG OUT</button>

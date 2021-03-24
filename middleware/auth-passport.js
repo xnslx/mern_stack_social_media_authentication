@@ -53,7 +53,12 @@ passport.use('signup', new localStrategy({
     if (foundUser) {
         return done(null, false, { message: 'This email has already been taken' })
     }
-    foundUser = await User.findOne({ 'facebook.email': email })
+    foundUser = await User.findOne({
+        $or: [
+            { 'facebook.email': email },
+            { 'github.email': email },
+        ]
+    })
     if (foundUser) {
         foundUser.facebook.email = email
         bcrypt.hash(password, 10)
