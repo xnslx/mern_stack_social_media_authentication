@@ -277,9 +277,9 @@ exports.postGoogleInfo = (req, res, next) => {
     const { tokenId } = req.body
     client.verifyIdToken({ idToken: tokenId, audience: process.env.GOOGLE_APP_ID }).then(response => {
         console.log(response)
-        const { email, email_verified, name } = response.payload;
+        const { email, email_verified, name, _id } = response.payload;
         if (email_verified) {
-            User.findOne({ email: email }).exec((err, user) => {
+            User.findOne({ 'google.email': email }).exec((err, user) => {
                 if (err) {
                     return res.status(400).json({ message: 'Something went wrong when trying to find your email.' })
                 } else {
@@ -295,13 +295,16 @@ exports.postGoogleInfo = (req, res, next) => {
                     } else {
                         const newUser = new User({
                             name: name,
-                            email: email
+                            google: {
+                                id: _id,
+                                email: email
+                            }
                         })
                         newUser.save((err, data) => {
                             if (err) {
                                 return res.status(400).json({ message: 'Something went wrong when trying to save your data.' })
                             }
-                            const token = jwt.sign({ _id: data._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
+                            const token = jwt.sign({ sub: data._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
                             const { _id, name, email } = newUser;
                             res.cookie('access_token', token, {
                                 httpOnly: true
@@ -328,7 +331,9 @@ exports.getGithubCallback = (req, res, next) => {
     console.log('getGithubCallback', req.user)
     if (req.user) {
         const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
-        res.cookie('access_token', token)
+        res.cookie('access_token', token, {
+                httpOnly: true
+            })
             // res.redirect('/user/profile')
         res.writeHead(302, {
             Location: 'http://localhost:3000/profile'

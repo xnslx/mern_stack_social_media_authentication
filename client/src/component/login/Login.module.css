@@ -5,3 +5,12 @@
     justify-content: space-around;
     margin-top: -200px;
 }
+
+@media only screen and (min-width: 768px) {
+    .SocialButton {
+        width: 40vw;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: -180px;
+    }
+}

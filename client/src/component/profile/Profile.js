@@ -7,9 +7,9 @@ import classes from './Profile.module.css';
 const Profile = (props) => {
     const [name, setName] = useState('')
 
-    // useEffect(() => {
-    //     props.dispatch(getProfileData())
-    // },[])
+    useEffect(() => {
+        props.dispatch(getProfileData())
+    },[])
 
     useEffect(() => {
         if(props.auth.user !==null) {
@@ -19,7 +19,6 @@ const Profile = (props) => {
         }
     },[props.auth.user])
 
-    console.log('name', name)
 
     const clickHandler = (e) => {
         e.preventDefault();

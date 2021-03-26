@@ -23,3 +23,18 @@
     padding: 12px 36px 12px 36px;
     margin: 12px;
 }
+
+@media only screen and (min-width: 768px) {
+    .Container {
+        width: 40vw;
+    }
+    .Input {
+        width: 40vw;
+    }
+    .Button {
+        width: 41vw;
+    }
+    .ErrorMessage {
+        width: 38vw;
+    }
+}

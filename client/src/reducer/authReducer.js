@@ -17,11 +17,16 @@ export const loginReducer = (state = initialState, action) => {
             }
         case actionTypes.LOGIN_SUCCESS:
         case actionTypes.FACEBOOK_LOGIN_SUCCESS:
-        case actionTypes.GOOGLE_LOGIN_SUCCESS:
         case actionTypes.GET_PROFILE_DATA:
             return {
                 loading: false,
                 user: action.payload,
+                isAuthenticated: true
+            }
+        case actionTypes.GOOGLE_LOGIN_SUCCESS:
+            return {
+                loading: false,
+                user: action.payload.user,
                 isAuthenticated: true
             }
         case actionTypes.LOGIN_FAIL:

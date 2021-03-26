@@ -40,6 +40,8 @@ passport.use('login', new localStrategy({
 ));
 
 
+
+
 passport.use('signup', new localStrategy({
     usernameField: 'email',
     passwordField: 'password',
@@ -57,6 +59,7 @@ passport.use('signup', new localStrategy({
         $or: [
             { 'facebook.email': email },
             { 'github.email': email },
+            { 'google.email': email },
         ]
     })
     if (foundUser) {
@@ -117,42 +120,79 @@ passport.use('jwt', new JwtStrategy({
 }))
 
 
+// passport.use('facebook-token', new FacebookTokenStrategy({
+//     clientID: process.env.FACEBOOK_APP_ID,
+//     clientSecret: process.env.FACEBOOK_APP_SECRET,
+//     // profileFields: ['email', 'displayName'],
+//     passReqToCallback: true
+//         // callbackURL: '/auth/facebook/callback'
+// }, function(req, accessToken, refreshToken, profile, done) {
+//     console.log('accessToken', accessToken)
+//     console.log('refreshToken', refreshToken)
+//     console.log('profile', profile)
+//     console.log('req.user', req.user)
+//     User
+//         .findOne({ 'facebook.id': profile.id }, function(err, user) {
+//             if (err) {
+//                 return done(err)
+//             } else if (user) {
+//                 console.log('user', user)
+//                 return done(null, user)
+//             } else {
+//                 const newUser = new User({
+//                     name: profile.displayName,
+//                     facebook: {
+//                         id: profile.id,
+//                         email: profile._json.email
+//                     }
+//                 })
+//                 newUser.save()
+//                 done(null, newUser)
+//             }
+//         })
+//         .catch(err => {
+//             console.log(err)
+//         })
+
+// }))
+
+
 passport.use('facebook-token', new FacebookTokenStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    // profileFields: ['email', 'displayName'],
     passReqToCallback: true
-        // callbackURL: '/auth/facebook/callback'
-}, function(req, accessToken, refreshToken, profile, done) {
-    console.log('req.user', req.user)
-    console.log('accessToken', accessToken)
-    console.log('refreshToken', refreshToken)
-    console.log('profile', profile)
-    User
-        .findOne({ 'facebook.id': profile.id }, function(err, user) {
-            if (err) {
-                return done(err)
-            } else if (user) {
-                console.log('user', user)
-                done(null, user)
-            } else {
-                const newUser = new User({
-                    name: profile.displayName,
-                    facebook: {
-                        id: profile.id,
-                        email: profile._json.email
-                    }
-                })
-                newUser.save()
-                done(null, newUser)
+}, async(req, accessToken, refreshToken, profile, done) => {
+    try {
+        console.log('accessToken', accessToken)
+        console.log('refreshToken', refreshToken)
+        console.log('profile', profile)
+        console.log('req.user', req.user)
+        let existingUser = await User.findOne({ 'facebook.id': profile.id })
+        if (existingUser) {
+            return done(null, existingUser)
+        }
+        existingUser = await User.findOne({ 'email': profile.emails[0].value })
+        if (existingUser) {
+            existingUser.facebook = {
+                id: profile.id,
+                email: profile.emails[0].value
+            }
+            await existingUser.save()
+            return done(null, existingUser)
+        }
+        const newUser = new User({
+            name: profile.displayName,
+            facebook: {
+                id: profile.id,
+                email: profile.emails[0].value
             }
         })
-        .catch(err => {
-            console.log(err)
-        })
-
+        await newUser.save()
+        return done(null, newUser)
+    } catch (error) {
+        done(error, false, error.message)
+    }
 }))
-
 
 
 // passport.use('google', new GoogleStrategy({
@@ -220,35 +260,71 @@ passport.use('twitter', new TwitterStrategy({
 }))
 
 
+// passport.use('github', new GitHubStrategy({
+//     clientID: process.env.GITHUB_CLIENTID,
+//     clientSecret: process.env.GITHUB_CLIENT_SECRET,
+//     callbackURL: "http://localhost:3001/auth/github/callback"
+// }, function(accessToken, refreshToken, profile, done) {
+//     console.log('accessToken', accessToken)
+//     console.log('refreshToken', refreshToken)
+//     console.log('profile', profile)
+//     User
+//         .findOne({ githubId: profile.id }, function(err, user) {
+//             console.log('user', user)
+//             if (err) {
+//                 return done(err)
+//             } else if (user) {
+//                 console.log('middleware', user)
+//                 return done(null, user)
+//             } else {
+//                 const newUser = new User({
+//                     name: profile.username,
+//                     github: {
+//                         id: profile.id,
+//                         email: profile._json.email
+//                     }
+//                 })
+//                 newUser.save()
+//                 done(null, newUser)
+//             }
+//         })
+//         .catch(err => {
+//             console.log(err)
+//         })
+// }))
+
 passport.use('github', new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENTID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: "http://localhost:3001/auth/github/callback"
-}, function(accessToken, refreshToken, profile, done) {
+}, async(accessToken, refreshToken, profile, done) => {
     console.log('accessToken', accessToken)
     console.log('refreshToken', refreshToken)
     console.log('profile', profile)
-    User
-        .findOne({ githubId: profile.id }, function(err, user) {
-            console.log('user', user)
-            if (err) {
-                return done(err)
-            } else if (user) {
-                console.log('middleware', user)
-                return done(null, user)
-            } else {
-                const newUser = new User({
-                    name: profile.username,
-                    github: {
-                        id: profile.id,
-                        email: profile._json.email
-                    }
-                })
-                newUser.save()
-                done(null, newUser)
+    try {
+        let existingUser = await User.findOne({ githubId: profile.id })
+        if (existingUser) {
+            return done(null, existingUser)
+        }
+        existingUser = await User.findOne({ 'email': profile.emails[0].value })
+        if (existingUser) {
+            existingUser.github = {
+                id: profile.id,
+                email: profile.emails[0].value
+            }
+            await existingUser.save()
+            return done(null, existingUser)
+        }
+        const newUser = new User({
+            name: profile.username,
+            github: {
+                id: profile.id,
+                email: profile.emails[0].value
             }
         })
-        .catch(err => {
-            console.log(err)
-        })
+        await newUser.save()
+        return done(null, newUser)
+    } catch (error) {
+        done(error, false, error.message)
+    }
 }))
