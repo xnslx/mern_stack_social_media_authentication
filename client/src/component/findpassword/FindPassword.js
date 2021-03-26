@@ -13,18 +13,6 @@ const FindPassword = (props) => {
         email: email
     }
 
-    // useEffect(() => {
-    //     getErrorMessage()
-    // }, [props.error.message])
-
-    // const getErrorMessage = () => {
-    //     if(props.error !== null) {
-    //     setError(props.error);
-    //     }
-    // }
-
-    // console.log('error', error)
-
     const findPasswordHandler = (e) => {
         e.preventDefault();
         props.dispatch(retrievePassword(verifiedEmail));
@@ -43,7 +31,6 @@ const FindPassword = (props) => {
         }
     },[props.error, props.error.type])
 
-    console.log('error', error)
 
     
     if(error && errorType === "validator") {
@@ -60,11 +47,6 @@ const FindPassword = (props) => {
     return (
         <div>
         <Link to='/' className={classes.Link} >BACK TO HOME</Link>
-        {/* {props.error.hasError === true && (
-            <div className={classes.ErrorMessage}>
-                <p>{props.error.message}</p>
-            </div>
-        )} */}
         {errorMessage}
         {props.backendData === 'Email sent!' && (
             <div className={classes.TextContainer}>

@@ -33,8 +33,6 @@ const LoginForm = (props) => {
         }
     },[props.error, props.error.type])
 
-    // console.log('error', error)
-
     
     if(error && errorType === "validator") {
         errorMessage = (<ul className={classes.ErrorMessage}>{error.map((err, index) => (
