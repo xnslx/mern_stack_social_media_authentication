@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "mern stack social media authentication",
     "main": "app.js",
+    "engines": {
+        "node": "12.18.2"
+    },
     "scripts": {
         "client-install": "npm install --prefix client",
         "start": "node app.js",
