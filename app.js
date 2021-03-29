@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const cors = require('cors')
 const app = express();
 const mongodb = require('mongodb');
@@ -37,6 +38,13 @@ app.use(passport.initialize())
 
 app.use('/', authRoute)
 app.use('/user', userRoute)
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '/client/build/index.html'))
+    })
+}
 
 
 mongoose.connect(dbUrl, {
