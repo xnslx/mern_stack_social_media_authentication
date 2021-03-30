@@ -16,7 +16,7 @@ const port = process.env.PORT || 3001
 const cookieParser = require('cookie-parser');
 
 app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: ["http://localhost:3000", "http://localhost:3001", "https://polar-gorge-68331.herokuapp.com/"],
     credentials: true
 }))
 
