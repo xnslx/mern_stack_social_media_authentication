@@ -293,6 +293,9 @@ passport.use('twitter', new TwitterStrategy({
 //         })
 // }))
 
+// const clientUrl = process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL_PROD : process.env.CLIENT_URL_DEV;
+
+
 passport.use('github', new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENTID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,

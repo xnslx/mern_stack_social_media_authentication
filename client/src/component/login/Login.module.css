@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    margin-top: -200px;
+    margin-top: -220px;
 }
 
 @media only screen and (min-width: 768px) {
