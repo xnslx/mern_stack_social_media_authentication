@@ -327,7 +327,16 @@ exports.getTwitterCallback = (req, res, next) => {
     }
 }
 
-const clientUrl = process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL_PROD : process.env.CLIENT_URL_DEV;
+// const clientUrl = process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL_PROD : process.env.CLIENT_URL_DEV;
+
+let clientUrl;
+if (process.env.NODE_ENV === 'production') {
+    clientUrl = process.env.CLIENT_URL_PROD
+} else if (process.env.NODE_ENV === 'development') {
+    clientUrl = process.env.CLIENT_URL_DEV
+}
+
+console.log('clientUrl', clientUrl)
 
 
 exports.getGithubCallback = (req, res, next) => {
@@ -337,7 +346,7 @@ exports.getGithubCallback = (req, res, next) => {
         res.cookie('access_token', token, {
             httpOnly: true
         })
-        res.redirect('http://localhost:3000/profile')
+        res.redirect(`${clientUrl}/profile`)
             // res.writeHead(302, {
             //     Location: 'http://localhost:3000/profile'
             // });
