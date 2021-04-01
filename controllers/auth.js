@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const User = require('../model/users');
@@ -329,27 +329,35 @@ exports.getTwitterCallback = (req, res, next) => {
 
 // const clientUrl = process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL_PROD : process.env.CLIENT_URL_DEV;
 
-let clientUrl;
-if (process.env.NODE_ENV === 'production') {
-    clientUrl = process.env.CLIENT_URL_PROD
-} else if (process.env.NODE_ENV === 'development') {
-    clientUrl = process.env.CLIENT_URL_DEV
-}
+// const isProduction = process.env.NODE_ENV === 'production';
+// const clientUrl = isProduction ? process.env.CLIENT_URL_PROD : process.env.CLIENT_URL_DEV;
 
-console.log('clientUrl', clientUrl)
+// let clientUrl;
+// if (process.env.NODE_ENV === 'production') {
+//     clientUrl = process.env.CLIENT_URL_PROD
+// }
+// if (process.env.NODE_ENV === 'development') {
+//     clientUrl = process.env.CLIENT_URL_DEV
+// }
+
+// console.log('clientUrl', clientUrl)
+// console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 
 
 exports.getGithubCallback = (req, res, next) => {
+    // const clientUrl = req.protocol + "://" + req.get("host") + req.originalUrl
+    // console.log('req.originalUrl', req.originalUrl)
+    // console.log('clientUrl', clientUrl)
     console.log('getGithubCallback', req.user)
     if (req.user) {
         const token = jwt.sign({ sub: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '1h' });
         res.cookie('access_token', token, {
-            httpOnly: true
-        })
-        res.redirect(`${clientUrl}/profile`)
-            // res.writeHead(302, {
-            //     Location: 'http://localhost:3000/profile'
-            // });
+                httpOnly: true
+            })
+            // res.redirect(`${clientUrl}/profile`)
+        res.writeHead(302, {
+            Location: 'https://polar-gorge-68331.herokuapp.com/profile'
+        });
         res.end()
     }
 }
