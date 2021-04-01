@@ -8,4 +8,4 @@
 
 <p>Here is the deomo. 👉<strong>https://polar-gorge-68331.herokuapp.com/</strong></p>
 
-<p>If you like the project, don't forget to give me a star🌟 or <a href="https://www.buymeacoffee.com/xianl">buy me a coffee</a>. ☕️/p>
+<p>If you like the project, don't forget to give me a star🌟 or <a href="https://www.buymeacoffee.com/xianl">buy me a coffee</a>. ☕️</p>
